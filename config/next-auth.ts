@@ -4,7 +4,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import type { Adapter } from 'next-auth/adapters';
 import { db } from '~/config/db';
-import { accounts, sessions, users, verificationTokens } from '~/schema/users';
+import { accounts, sessions, users, verificationTokens } from '~/domain/schema/users';
 
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NEXTAUTH_SECRET } = process.env;
 
@@ -31,7 +31,7 @@ export const nextAuthConfig: NextAuthOptions = {
           ...profile,
           id: profile.sub,
           role: profile.role ?? 'trainee',
-          avatar: profile.picture,
+          image: profile.picture,
         };
       },
     }),
@@ -42,7 +42,12 @@ export const nextAuthConfig: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        return { ...token, ...user };
+        token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.image = user.image ?? '';
+        token.role = user.role ?? 'trainee';
+        return token;
       }
 
       return token;
@@ -57,7 +62,7 @@ export const nextAuthConfig: NextAuthOptions = {
             email: token.email,
             name: token.name,
             role: token.role,
-            avatar: token.avatar,
+            image: token.image,
           },
         };
       }

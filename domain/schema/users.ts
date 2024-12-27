@@ -1,6 +1,5 @@
 import { text, timestamp, pgTable, integer, primaryKey, pgEnum } from 'drizzle-orm/pg-core';
 import type { AdapterAccountType } from '@auth/core/adapters';
-import { createInsertSchema } from 'drizzle-zod';
 
 export const rolesEnum = pgEnum('roles', ['manager', 'cashier', 'trainee']);
 
@@ -8,12 +7,11 @@ export const users = pgTable('user', {
   id: text('id')
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
-  name: text('name'),
+  name: text('name').notNull(),
   email: text('email').notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
-  image: text('image'),
-  phone: text('phone'),
-  role: rolesEnum('role').default('trainee'),
+  image: text('image').notNull(),
+  role: rolesEnum('role').default('trainee').notNull(),
 });
 
 export const accounts = pgTable(
@@ -59,6 +57,3 @@ export const verificationTokens = pgTable(
     compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
   }),
 );
-
-export const userReqSchema = createInsertSchema(users).omit({ id: true });
-export const updteUserReqSchema = createInsertSchema(users).pick({ phone: true });
