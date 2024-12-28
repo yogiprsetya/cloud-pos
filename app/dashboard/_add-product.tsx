@@ -26,9 +26,11 @@ import { Input } from '~/components/ui/input';
 import { FC, ReactNode, useState } from 'react';
 import { UploadImage } from '~/components/pattern/UploadImage';
 import { If } from '~/components/ui/if';
+import { useToast } from '~/hooks/useToast';
+import { Textarea } from '~/components/ui/textarea';
 
-const baseForm: z.ZodType<Pick<Product, 'sku' | 'name' | 'price'>> = z.object({
-  sku: z.string(),
+const baseForm: z.ZodType<Pick<Product, 'name' | 'price' | 'description'>> = z.object({
+  description: z.string(),
   name: z.string().min(2).max(100),
   price: z.coerce.number().min(50),
 });
@@ -39,9 +41,9 @@ const imageForm: z.ZodType<Pick<Product, 'image'>> = z.object({
 
 const DefaultValue = {
   1: {
-    sku: '',
     name: '',
     price: 0,
+    description: '',
   },
   2: {
     image: '',
@@ -65,6 +67,8 @@ type Props = {
 export const AddProduct: FC<Props> = ({ trigger }) => {
   const [step, setStep] = useState<keyof FormType>(1);
 
+  const { toast } = useToast();
+
   const form = useForm<FormType[typeof step]>({
     resolver: zodResolver(Schema[step]),
     defaultValues: DefaultValue[step],
@@ -74,7 +78,12 @@ export const AddProduct: FC<Props> = ({ trigger }) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
-    setStep(2);
+    // setStep(2);
+    toast({
+      title: 'Product created',
+      description: 'Continue to add product image',
+      duration: 2500,
+    });
   };
 
   return (
@@ -97,22 +106,6 @@ export const AddProduct: FC<Props> = ({ trigger }) => {
             className="grid gap-4 py-4"
           >
             <If condition={step === 1}>
-              <FormField
-                control={form.control}
-                name="sku"
-                render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center">
-                    <FormLabel className="text-right mr-4">SKU</FormLabel>
-
-                    <FormControl>
-                      <Input placeholder="Type product SKU" className="col-span-3" {...field} />
-                    </FormControl>
-
-                    <FormMessage className="col-span-3 col-end-5 mt-1" />
-                  </FormItem>
-                )}
-              />
-
               <FormField
                 control={form.control}
                 name="name"
@@ -142,6 +135,27 @@ export const AddProduct: FC<Props> = ({ trigger }) => {
                         type="number"
                         className="col-span-3"
                         {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage className="col-span-3 col-end-5 mt-1" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4">
+                    <FormLabel className="text-right mr-4 mt-2">Description</FormLabel>
+
+                    <FormControl>
+                      <Textarea
+                        placeholder="Tell us a little bit about this product"
+                        className="resize-none col-span-3"
+                        {...field}
+                        value={field.value ?? ''}
                       />
                     </FormControl>
 

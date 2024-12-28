@@ -3,6 +3,7 @@ import { SidebarInset, SidebarProvider } from '~/components/ui/sidebar';
 import { AppSidebar } from './app-sidebar';
 import { Header } from './app-header';
 import { Sheet } from '~/components/ui/sheet';
+import { ToastProvider } from '~/components/layout/ToastProvider';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -24,6 +25,8 @@ export default function RootLayout({
           <div className="px-6 md:mt-10 mt-6 bg-card">{children}</div>
         </SidebarInset>
       </Sheet>
+
+      <ToastProvider />
     </SidebarProvider>
   );
 }

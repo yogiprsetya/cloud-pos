@@ -15,6 +15,20 @@
       "when": 1735350615209,
       "tag": "0001_confused_kat_farrell",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1735357921059,
+      "tag": "0002_omniscient_fallen_one",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1735365019840,
+      "tag": "0003_lame_mister_fear",
+      "breakpoints": true
     }
   ]
 }

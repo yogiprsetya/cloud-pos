@@ -4,6 +4,7 @@ import './globals.css';
 import { ThemeProvider } from 'next-themes';
 import { cn } from '~/utils/css';
 import { NextAuthProvider } from '~/components/layout/NextAuthProvider';
+import { SWRProvider } from '~/components/layout/SWRProvider';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -31,7 +32,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={cn(geistSans.variable, geistMono.variable, 'antialiased')}>
         <ThemeProvider attribute="class" defaultTheme="light">
-          <NextAuthProvider>{children}</NextAuthProvider>
+          <SWRProvider>
+            <NextAuthProvider>{children}</NextAuthProvider>
+          </SWRProvider>
         </ThemeProvider>
       </body>
     </html>

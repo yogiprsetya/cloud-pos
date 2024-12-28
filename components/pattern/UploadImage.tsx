@@ -3,7 +3,7 @@
 import { ChangeEvent, ComponentProps, forwardRef, useCallback, useId, useState } from 'react';
 import { Input } from '~/components/ui/input';
 import { Label } from '~/components/ui/label';
-import { useImageResizer } from '~/hooks/use-image-resizer';
+import { useImageResizer } from '~/hooks/useImageResizer';
 import { cn } from '~/utils/css';
 import { If } from '../ui/if';
 import { Button } from '../ui/button';
