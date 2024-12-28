@@ -13,7 +13,7 @@ import { Button } from '~/components/ui/button';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Product } from '~/domain/types/Product';
+import { Product } from '~/domain/types/product';
 import {
   Form,
   FormControl,
@@ -27,8 +27,8 @@ import { FC, ReactNode, useState } from 'react';
 import { UploadImage } from '~/components/pattern/UploadImage';
 import { If } from '~/components/ui/if';
 
-const baseForm: z.ZodType<Omit<Product, 'id' | 'image'>> = z.object({
-  sku: z.string().min(2).max(50),
+const baseForm: z.ZodType<Pick<Product, 'sku' | 'name' | 'price'>> = z.object({
+  sku: z.string(),
   name: z.string().min(2).max(100),
   price: z.coerce.number().min(50),
 });

@@ -19,7 +19,8 @@
       }
     ],
     "paths": {
-      "~/*": ["./*"]
+      "~/*": ["./*"],
+      "api-lib/*": ["./app/api/_lib/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
