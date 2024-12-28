@@ -20,9 +20,9 @@ export default function RootLayout({
       <Sheet>
         <AppSidebar />
 
-        <SidebarInset>
+        <SidebarInset className="bg-card">
           <Header />
-          <div className="px-6 md:mt-10 mt-6 bg-card">{children}</div>
+          <div className="px-6 md:mt-10 mt-6">{children}</div>
         </SidebarInset>
       </Sheet>
 

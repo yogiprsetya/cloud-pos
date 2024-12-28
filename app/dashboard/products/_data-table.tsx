@@ -5,6 +5,7 @@ import { Boxes } from 'lucide-react';
 // import { DataTable } from '~/components/pattern/DataTable';
 import { Searchbar } from '~/components/pattern/Searchbar';
 import { If } from '~/components/ui/if';
+import { Loading } from '~/components/ui/loading';
 import { useProduct } from '~/services/use-product';
 
 // type Stock = {
@@ -35,7 +36,7 @@ import { useProduct } from '~/services/use-product';
 // ];
 
 export const ProductPortfolio = () => {
-  const { data, setSearchKeyword } = useProduct();
+  const { data, isLoading, setSearchKeyword } = useProduct();
 
   return (
     <>
@@ -43,27 +44,31 @@ export const ProductPortfolio = () => {
         <Searchbar className="w-72" onChange={setSearchKeyword} />
       </div>
 
-      <div className="grid grid-cols-4 gap-4">
-        {data?.data.map((product) => (
-          <div key={product.id} className="rounded-md bg-white overflow-hidden border">
-            <div className="min-h-40 w-full bg-muted flex items-center justify-center">
-              {product.image ? (
-                <img src={product.image} alt={product.name} />
-              ) : (
-                <Boxes className="text-primary size-8" />
-              )}
-            </div>
+      {isLoading ? (
+        <Loading className="size-6 mx-auto" />
+      ) : (
+        <div className="grid grid-cols-4 gap-4">
+          {data?.data.map((product) => (
+            <div key={product.id} className="rounded-md bg-white overflow-hidden border">
+              <div className="min-h-40 w-full bg-muted flex items-center justify-center relative">
+                {product.image ? (
+                  <img src={product.image} alt={product.name} />
+                ) : (
+                  <Boxes className="text-primary size-8" />
+                )}
+              </div>
 
-            <div className="p-4">
-              <h3 className="font-semibold">{product.name}</h3>
+              <div className="p-4">
+                <h3 className="font-semibold">{product.name}</h3>
 
-              <If condition={product.description}>
-                <p className="text-sm">{product.description}</p>
-              </If>
+                <If condition={product.description}>
+                  <p className="text-sm">{product.description}</p>
+                </If>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </>
   );
 };
