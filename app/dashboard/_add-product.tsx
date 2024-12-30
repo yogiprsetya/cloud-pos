@@ -13,7 +13,7 @@ import { Button } from '~/components/ui/button';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Product } from '~/domain/types/product';
+import { Product } from '~/model/types/product';
 import {
   Form,
   FormControl,
@@ -23,10 +23,9 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode, useEffect, useState } from 'react';
 import { UploadImage } from '~/components/pattern/UploadImage';
 import { If } from '~/components/ui/if';
-import { useToast } from '~/hooks/useToast';
 import { Textarea } from '~/components/ui/textarea';
 
 const baseForm: z.ZodType<Pick<Product, 'name' | 'price' | 'description'>> = z.object({
@@ -39,35 +38,35 @@ const imageForm: z.ZodType<Pick<Product, 'image'>> = z.object({
   image: z.string(),
 });
 
+type FormType = {
+  main: z.infer<typeof baseForm>;
+  image: z.infer<typeof imageForm>;
+};
+
+const Schema = {
+  main: baseForm,
+  image: imageForm,
+};
+
 const DefaultValue = {
-  1: {
+  main: {
     name: '',
     price: 0,
     description: '',
   },
-  2: {
+  image: {
     image: '',
   },
 };
 
-const Schema = {
-  1: baseForm,
-  2: imageForm,
-};
-
-type FormType = {
-  1: z.infer<typeof baseForm>;
-  2: z.infer<typeof imageForm>;
-};
-
 type Props = {
   trigger: ReactNode;
+  initData?: Product;
+  initStep?: keyof FormType;
 };
 
-export const AddProduct: FC<Props> = ({ trigger }) => {
-  const [step, setStep] = useState<keyof FormType>(1);
-
-  const { toast } = useToast();
+export const AddProduct: FC<Props> = ({ trigger, initData, initStep = 'main' }) => {
+  const [step, setStep] = useState<keyof FormType>(initStep);
 
   const form = useForm<FormType[typeof step]>({
     resolver: zodResolver(Schema[step]),
@@ -78,13 +77,21 @@ export const AddProduct: FC<Props> = ({ trigger }) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
-    // setStep(2);
-    toast({
-      title: 'Product created',
-      description: 'Continue to add product image',
-      duration: 2500,
-    });
+
+    if (step === 'main') {
+      setStep('image');
+    }
   };
+
+  useEffect(() => {
+    if (!initData) return;
+
+    if (initStep === 'main') {
+      form.setValue('name', initData.name);
+      form.setValue('price', initData.price);
+      form.setValue('description', initData.description);
+    }
+  }, [form, initData, initStep]);
 
   return (
     <Dialog>
@@ -105,7 +112,7 @@ export const AddProduct: FC<Props> = ({ trigger }) => {
             id="product-form"
             className="grid gap-4 py-4"
           >
-            <If condition={step === 1}>
+            <If condition={step === 'main'}>
               <FormField
                 control={form.control}
                 name="name"
@@ -165,7 +172,7 @@ export const AddProduct: FC<Props> = ({ trigger }) => {
               />
             </If>
 
-            <If condition={step === 2}>
+            <If condition={step === 'image'}>
               <UploadImage label="Image" />
             </If>
           </form>
@@ -173,7 +180,7 @@ export const AddProduct: FC<Props> = ({ trigger }) => {
 
         <DialogFooter>
           <Button type="submit" form="product-form">
-            {step === 1 ? 'Create Product' : 'Save'}
+            {step === 'main' ? 'Create Product' : 'Save'}
           </Button>
         </DialogFooter>
       </DialogContent>

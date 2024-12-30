@@ -12,6 +12,7 @@ import { CloudUpload } from 'lucide-react';
 interface Props extends Omit<ComponentProps<'input'>, 'onChange'> {
   label: string;
   className?: string;
+  existingImageUrl?: string;
   onUploaded?: (file: string) => void;
 }
 
@@ -49,11 +50,11 @@ export const UploadImage = forwardRef<HTMLInputElement, Props>((props, ref) => {
 
       <Input id={elementId} type="file" ref={ref} onChange={handleUpload} className="col-span-3" />
 
-      <If condition={preview}>
+      <If condition={preview || props.existingImageUrl}>
         {(src) => (
           <div className="relative col-span-4 mt-6">
             <img
-              src={URL.createObjectURL(src)}
+              src={typeof src === 'string' ? src : URL.createObjectURL(src)}
               alt="product image preview"
               className="w-full rounded"
             />

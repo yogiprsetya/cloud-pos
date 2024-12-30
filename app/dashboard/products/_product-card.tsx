@@ -1,7 +1,7 @@
 import { Boxes } from 'lucide-react';
 import { FC, ReactNode } from 'react';
 import { If } from '~/components/ui/if';
-import { type Product } from '~/domain/types/product';
+import { type Product } from '~/model/types/product';
 import { formatRp } from '~/utils/rupiah';
 
 type Props = Omit<Product, 'createdAt' | 'updatedAt'> & {

@@ -6,10 +6,11 @@ import { useProduct } from '~/services/use-product';
 import { ProductCard } from './_product-card';
 import { CardMenu } from './_card-menu';
 import { If } from '~/components/ui/if';
+import { FC } from 'react';
 
-export const ProductPortfolio = () => {
-  const { data, isLoading, setSearchKeyword } = useProduct();
+type Props = ReturnType<typeof useProduct>;
 
+export const ProductPortfolio: FC<Props> = ({ isLoading, setSearchKeyword, data }) => {
   return (
     <>
       <div className="flex mb-6">

@@ -4,7 +4,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import type { Adapter } from 'next-auth/adapters';
 import { db } from '~/config/db';
-import { accounts, sessions, users, verificationTokens } from '~/domain/schema/users';
+import { accounts, sessions, users, verificationTokens } from '~/model/schema/users';
 
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NEXTAUTH_SECRET } = process.env;
 

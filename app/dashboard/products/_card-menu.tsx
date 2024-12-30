@@ -7,7 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
-import { Product } from '~/domain/types/product';
+import { Product } from '~/model/types/product';
 
 export const CardMenu: FC<Product> = () => {
   return (

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { DefaultSession } from 'next-auth';
-import * as UserCore from '~/domain/types/users';
+import * as UserCore from '~/model/types/users';
 
 declare module 'next-auth' {
   /**

@@ -3,10 +3,10 @@ import { db } from '~/config/db';
 import { handleSuccessResponse } from 'api-lib/handle-success-res';
 import { handleExpiredSession, handleInvalidRequest } from 'api-lib/handle-error-res';
 import { and, asc, desc, ilike } from 'drizzle-orm';
-import { product } from '~/domain/schema/product';
+import { product } from '~/model/schema/product';
 import { type NextRequest } from 'next/server';
 import { createMeta } from 'api-lib/create-meta';
-import { Product } from '~/domain/types/product';
+import { Product } from '~/model/types/product';
 import { bodyParse } from 'api-lib/body-parse';
 import { createInsertSchema } from 'drizzle-zod';
 
