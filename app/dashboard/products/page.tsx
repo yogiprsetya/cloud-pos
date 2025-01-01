@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { ProductView } from './_page-view';
+import { ProductView } from './page-view';
 
 const StocksPage = () => (
   <Suspense>

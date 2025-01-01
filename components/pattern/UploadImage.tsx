@@ -12,12 +12,12 @@ import { CloudUpload } from 'lucide-react';
 interface Props extends Omit<ComponentProps<'input'>, 'onChange'> {
   label: string;
   className?: string;
-  existingImageUrl?: string;
+  existingImageUrl?: string | null;
   onUploaded?: (file: string) => void;
 }
 
-const WIDTH = 500;
-const HEIGHT = 375;
+const WIDTH = 400;
+const HEIGHT = 300;
 
 export const UploadImage = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const [preview, setPreview] = useState<File | null>(null);
@@ -52,7 +52,7 @@ export const UploadImage = forwardRef<HTMLInputElement, Props>((props, ref) => {
 
       <If condition={preview || props.existingImageUrl}>
         {(src) => (
-          <div className="relative col-span-4 mt-6">
+          <div className="relative col-span-4 mt-2">
             <img
               src={typeof src === 'string' ? src : URL.createObjectURL(src)}
               alt="product image preview"

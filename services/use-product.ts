@@ -32,28 +32,60 @@ export const useProduct = (opt?: Options) => {
     opt?.disabled ? null : `product?${params.toString()}`,
   );
 
+  const mutateAsync = useCallback(
+    (data: Product) => {
+      mutate((current) => {
+        if (!current) return current;
+
+        return {
+          ...current,
+          data: [...current.data, data],
+        };
+      }, false);
+    },
+    [mutate],
+  );
+
   const initNewProduct = useCallback(
     (form: Pick<Product, 'name' | 'description' | 'price'>) => {
       setMutating(true);
 
-      httpClient.post<Product>('product', form).then((res) => {
-        toast({
-          title: 'Product created',
-          description: 'Continue to add product image',
-          duration: 2500,
-        });
+      return httpClient
+        .post<HttpRequest<Product>>('product', form)
+        .then((res) => {
+          toast({
+            title: 'Product created',
+            description: 'Continue to add product image',
+            duration: 2500,
+          });
 
-        mutate((current) => {
-          if (!current) return current;
-
-          return {
-            ...current,
-            data: [...current.data, res.data],
-          };
-        });
-      });
+          mutateAsync(res.data.data);
+          return res;
+        })
+        .finally(() => setMutating(false));
     },
-    [mutate, toast],
+    [mutateAsync, toast],
+  );
+
+  const setProductImage = useCallback(
+    (productId: number, url: string) => {
+      setMutating(true);
+
+      httpClient
+        .put<HttpRequest<Product>>(`product/${productId}`, { image: url })
+        .then((res) => {
+          toast({
+            title: 'Product created',
+            description: 'Continue to add product image',
+            duration: 2500,
+          });
+
+          mutateAsync(res.data.data);
+          return res;
+        })
+        .finally(() => setMutating(false));
+    },
+    [mutateAsync, toast],
   );
 
   return {
@@ -62,6 +94,7 @@ export const useProduct = (opt?: Options) => {
     mutate,
     isMutating,
     initNewProduct,
+    setProductImage,
     setSearchKeyword: useDebouncedCallback((q: string) => setSearchKeyword(q), 500),
   };
 };

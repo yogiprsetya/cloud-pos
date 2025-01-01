@@ -1,7 +1,6 @@
 import { Text } from '~/components/ui/text';
 import { Button } from '~/components/ui/button';
 import { Plus, Package2 } from 'lucide-react';
-import { AddProduct } from '../_add-product';
 import dynamic from 'next/dynamic';
 
 const StockDataTable = dynamic(() => import('./_data-table').then((c) => c.StockDataTable));
@@ -19,13 +18,11 @@ const StocksPage = () => {
         </header>
 
         <nav className="flex gap-2">
-          <AddProduct
-            trigger={
-              <Button variant="secondary">
-                <Plus /> Product
-              </Button>
-            }
-          />
+          <Button variant="secondary" asChild>
+            <a href="/dashboard/products" aria-label="Add new product">
+              <Plus /> Product
+            </a>
+          </Button>
 
           <Button>
             <Package2 /> Stock-in

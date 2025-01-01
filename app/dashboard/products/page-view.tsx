@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 import { useProduct } from '~/services/use-product';
 
 const ProductPortfolio = dynamic(() => import('./_data-table').then((c) => c.ProductPortfolio));
-const AddProduct = dynamic(() => import('../_add-product').then((c) => c.AddProduct));
+const ManageProduct = dynamic(() => import('./_manage-product').then((c) => c.ManageProduct));
 
 export const ProductView = () => {
   const state = useProduct();
@@ -17,7 +17,9 @@ export const ProductView = () => {
       title="Product"
       description="Product collection manager."
       actionElement={
-        <AddProduct
+        <ManageProduct
+          onCreate={state.initNewProduct}
+          onSetImage={state.setProductImage}
           trigger={
             <Button>
               <Plus /> Product

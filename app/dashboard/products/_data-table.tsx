@@ -22,15 +22,9 @@ export const ProductPortfolio: FC<Props> = ({ isLoading, setSearchKeyword, data 
       ) : (
         <div className="grid grid-cols-4 gap-4">
           <If condition={data?.data} fallback="Data product is empty, please create.">
-            {(d) =>
-              d.map((product) => (
-                <ProductCard
-                  key={product.id}
-                  {...product}
-                  menuElement={<CardMenu {...product} />}
-                />
-              ))
-            }
+            {data?.data.map((product) => (
+              <ProductCard key={product.id} {...product} menuElement={<CardMenu {...product} />} />
+            ))}
           </If>
         </div>
       )}
