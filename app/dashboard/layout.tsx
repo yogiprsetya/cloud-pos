@@ -22,7 +22,7 @@ export default function RootLayout({
 
         <SidebarInset className="bg-card">
           <Header />
-          <div className="px-6 md:mt-10 mt-6">{children}</div>
+          <div className="px-6 md:mt-10 mt-6 pb-10">{children}</div>
         </SidebarInset>
       </Sheet>
 

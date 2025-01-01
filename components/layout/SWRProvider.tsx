@@ -2,7 +2,7 @@
 
 import { FC, ReactNode } from 'react';
 import { SWRConfig } from 'swr';
-import { fetcher } from '~/services/http-client';
+import { fetcher } from '~/config/http-client';
 
 const swrOptions = {
   fetcher,

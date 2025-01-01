@@ -8,6 +8,7 @@ import { cn } from '~/utils/css';
 import { If } from '../ui/if';
 import { Button } from '../ui/button';
 import { CloudUpload } from 'lucide-react';
+import { useUpload } from '~/services/use-upload';
 
 interface Props extends Omit<ComponentProps<'input'>, 'onChange'> {
   label: string;
@@ -23,8 +24,8 @@ export const UploadImage = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const [preview, setPreview] = useState<File | null>(null);
 
   const elementId = useId();
-
   const { resizeFile } = useImageResizer({ width: WIDTH, height: HEIGHT });
+  const { upload, isUploading } = useUpload();
 
   const handleUpload = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
@@ -38,9 +39,15 @@ export const UploadImage = forwardRef<HTMLInputElement, Props>((props, ref) => {
     [resizeFile],
   );
 
-  const upload = useCallback(() => {
-    console.log(preview);
-  }, [preview]);
+  const onUpload = useCallback(async () => {
+    if (preview) {
+      const up = await upload(preview);
+
+      if (up.success && props.onUploaded && 'data' in up) {
+        props.onUploaded(up.data.fullPath);
+      }
+    }
+  }, [preview, props, upload]);
 
   return (
     <div className={cn('grid grid-cols-4 w-full items-center', props.className)}>
@@ -56,17 +63,21 @@ export const UploadImage = forwardRef<HTMLInputElement, Props>((props, ref) => {
             <img
               src={typeof src === 'string' ? src : URL.createObjectURL(src)}
               alt="product image preview"
-              className="w-full rounded"
+              className="w-full rounded object-cover"
+              style={{ maxHeight: HEIGHT }}
             />
 
-            <Button
-              onClick={upload}
-              className="absolute top-2 right-2"
-              size="sm"
-              variant="secondary"
-            >
-              <CloudUpload /> Upload
-            </Button>
+            <If condition={preview}>
+              <Button
+                onClick={onUpload}
+                className="absolute top-2 right-2"
+                size="sm"
+                variant="secondary"
+                disabled={isUploading}
+              >
+                <CloudUpload /> {isUploading ? 'Uploading ...' : 'Upload'}
+              </Button>
+            </If>
           </div>
         )}
       </If>

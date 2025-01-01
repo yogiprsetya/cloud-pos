@@ -3,8 +3,9 @@ import useSWR from 'swr';
 import { HttpRequest } from '~/model/types/http';
 import { useCallback, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { httpClient } from './http-client';
+import { httpClient } from '../config/http-client';
 import { useToast } from '~/hooks/useToast';
+import { errorHandler } from '~/utils/error-handler';
 
 type Options = {
   disabled?: boolean;
@@ -62,6 +63,7 @@ export const useProduct = (opt?: Options) => {
           mutateAsync(res.data.data);
           return res;
         })
+        .catch(errorHandler)
         .finally(() => setMutating(false));
     },
     [mutateAsync, toast],
@@ -83,6 +85,7 @@ export const useProduct = (opt?: Options) => {
           mutateAsync(res.data.data);
           return res;
         })
+        .catch(errorHandler)
         .finally(() => setMutating(false));
     },
     [mutateAsync, toast],

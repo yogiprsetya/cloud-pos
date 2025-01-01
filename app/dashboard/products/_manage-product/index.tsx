@@ -23,7 +23,7 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import { UploadImage } from '~/components/pattern/UploadImage';
 import { Textarea } from '~/components/ui/textarea';
 import { useProduct } from '~/services/use-product';
@@ -71,7 +71,7 @@ const Main: FC<Pick<Props, 'onCreate' | 'initData'>> = ({ initData, onCreate }) 
   });
 
   const onSubmit = (values: z.infer<typeof baseForm>) => {
-    onCreate({ name: values.name, description: values.description, price: values.price });
+    return onCreate({ name: values.name, description: values.description, price: values.price });
   };
 
   return (
@@ -159,7 +159,9 @@ const ProductImage: FC<Pick<Props, 'initData' | 'onSetImage'>> = ({ initData, on
         <FormField
           control={form.control}
           name="image"
-          render={({ field }) => <UploadImage label="Image" existingImageUrl={field.value} />}
+          render={({ field }) => (
+            <UploadImage label="Image" existingImageUrl={field.value} onUploaded={field.onChange} />
+          )}
         />
       </form>
     </Form>
@@ -169,11 +171,11 @@ const ProductImage: FC<Pick<Props, 'initData' | 'onSetImage'>> = ({ initData, on
 export const ManageProduct: FC<Props> = ({
   trigger,
   initData,
-  initStep = FormStepEnum.Main,
+  initStep = FormStepEnum.Image,
   onCreate,
   onSetImage,
 }) => {
-  // const [step, setStep] = useState<FormStepEnum>(initStep);
+  const [step, setStep] = useState<FormStepEnum>(initStep);
 
   const RenderForm = {
     Main: <Main onCreate={onCreate} initData={initData} />,
@@ -193,7 +195,7 @@ export const ManageProduct: FC<Props> = ({
           </DialogDescription>
         </DialogHeader>
 
-        {RenderForm[initStep]}
+        {RenderForm[step]}
 
         <DialogFooter>
           <Button type="submit" form="product-form">

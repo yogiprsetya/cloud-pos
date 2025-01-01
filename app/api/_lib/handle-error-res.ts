@@ -54,7 +54,7 @@ export const handleCatch = (message?: string) => {
   return NextResponse.json(
     {
       success: false,
-      err: message ?? 'Invalid request',
+      message: message ?? 'Invalid request',
     },
     { status: 500 },
   );
