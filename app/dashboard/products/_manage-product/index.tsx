@@ -7,7 +7,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '~/components/ui/dialog';
 import { Button } from '~/components/ui/button';
 import { z } from 'zod';
@@ -23,10 +22,11 @@ import {
   FormMessage,
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
-import { FC, ReactNode, useState } from 'react';
+import { FC } from 'react';
 import { UploadImage } from '~/components/pattern/UploadImage';
 import { Textarea } from '~/components/ui/textarea';
 import { useProduct } from '~/services/use-product';
+import { FormStepEnum, type DialogState } from './use-state';
 
 const baseForm: z.ZodType<Pick<Product, 'name' | 'price' | 'description'>> = z.object({
   description: z.string(),
@@ -41,27 +41,21 @@ const imageForm: z.ZodType<Pick<Product, 'image'>> = z.object({
   image: z.string().min(1).nonempty(),
 });
 
-enum FormStepEnum {
-  Main = 'Main',
-  Image = 'Image',
-}
-
-type Props = {
-  trigger: ReactNode;
-  initData?: Product;
+type Props = DialogState & {
   initStep?: FormStepEnum;
-  onCreate: ReturnType<typeof useProduct>['initNewProduct'];
+  handleCreate: ReturnType<typeof useProduct>['initNewProduct'];
+  onCreated: () => void;
   onSetImage: ReturnType<typeof useProduct>['setProductImage'];
 };
 
-const Main: FC<Pick<Props, 'onCreate' | 'initData'>> = ({ initData, onCreate }) => {
+const Main: FC<Pick<Props, 'handleCreate' | 'onCreated' | 'initData'>> = (props) => {
   const form = useForm<z.infer<typeof baseForm>>({
     resolver: zodResolver(baseForm),
-    defaultValues: initData
+    defaultValues: props.initData
       ? {
-          name: initData.name,
-          price: initData.price,
-          description: initData.description,
+          name: props.initData.name,
+          price: props.initData.price,
+          description: props.initData.description,
         }
       : {
           name: '',
@@ -71,7 +65,7 @@ const Main: FC<Pick<Props, 'onCreate' | 'initData'>> = ({ initData, onCreate }) 
   });
 
   const onSubmit = (values: z.infer<typeof baseForm>) => {
-    return onCreate({ name: values.name, description: values.description, price: values.price });
+    props.handleCreate({ name: values.name, description: values.description, price: values.price });
   };
 
   return (
@@ -168,24 +162,30 @@ const ProductImage: FC<Pick<Props, 'initData' | 'onSetImage'>> = ({ initData, on
   );
 };
 
-export const ManageProduct: FC<Props> = ({
-  trigger,
+export const ManageProduct: FC<Omit<Props, 'onCreated' | 'setInitData' | 'setInitStep'>> = ({
   initData,
   initStep = FormStepEnum.Image,
-  onCreate,
+  handleCreate,
+  isOpen,
+  toggleModal,
   onSetImage,
 }) => {
-  const [step, setStep] = useState<FormStepEnum>(initStep);
-
   const RenderForm = {
-    Main: <Main onCreate={onCreate} initData={initData} />,
+    Main: (
+      <Main
+        handleCreate={handleCreate}
+        // onCreated={() => setStep(FormStepEnum.Image)}
+        initData={initData}
+        onCreated={function (): void {
+          throw new Error('Function not implemented.');
+        }}
+      />
+    ),
     Image: <ProductImage onSetImage={onSetImage} initData={initData} />,
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
-
+    <Dialog open={isOpen} onOpenChange={toggleModal}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add new product</DialogTitle>
@@ -195,7 +195,7 @@ export const ManageProduct: FC<Props> = ({
           </DialogDescription>
         </DialogHeader>
 
-        {RenderForm[step]}
+        {RenderForm[initStep]}
 
         <DialogFooter>
           <Button type="submit" form="product-form">
