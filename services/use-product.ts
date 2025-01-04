@@ -7,9 +7,10 @@ import { httpClient } from '../config/http-client';
 import { useToast } from '~/hooks/useToast';
 import { errorHandler } from '~/utils/error-handler';
 
+const LIMIT = 12;
+
 type Options = {
   disabled?: boolean;
-  limit?: number;
   sort?: 'asc' | 'desc';
   sortBy?: keyof Pick<Product, 'createdAt' | 'updatedAt'>;
   page?: number;
@@ -23,14 +24,14 @@ export const useProduct = (opt?: Options) => {
 
   const params = new URLSearchParams({
     keyword,
-    limit: opt?.limit?.toString() || '',
+    limit: LIMIT.toString(),
     sortedBy: opt?.sortBy || '',
     sort: opt?.sort || '',
-    page: opt?.page?.toString() || '',
+    page: opt?.page?.toString() || ''
   });
 
   const { data, isLoading, mutate } = useSWR<HttpRequest<Product[]>, Error>(
-    opt?.disabled ? null : `product?${params.toString()}`,
+    opt?.disabled ? null : `product?${params.toString()}`
   );
 
   const mutateAsync = useCallback(
@@ -40,15 +41,15 @@ export const useProduct = (opt?: Options) => {
 
         return {
           ...current,
-          data: [...current.data, data],
+          data: [...current.data, data]
         };
       }, false);
     },
-    [mutate],
+    [mutate]
   );
 
-  const initNewProduct = useCallback(
-    (form: Pick<Product, 'name' | 'description' | 'price'>) => {
+  const createNewProduct = useCallback(
+    (form: Pick<Product, 'name' | 'description' | 'price' | 'image'>) => {
       setMutating(true);
 
       return httpClient
@@ -56,8 +57,8 @@ export const useProduct = (opt?: Options) => {
         .then((res) => {
           toast({
             title: 'Product created',
-            description: 'Continue to add product image',
-            duration: 2500,
+            description: 'Continue to add product variant',
+            duration: 2500
           });
 
           mutateAsync(res.data.data);
@@ -66,7 +67,7 @@ export const useProduct = (opt?: Options) => {
         .catch(errorHandler)
         .finally(() => setMutating(false));
     },
-    [mutateAsync, toast],
+    [mutateAsync, toast]
   );
 
   const setProductImage = useCallback(
@@ -79,7 +80,7 @@ export const useProduct = (opt?: Options) => {
           toast({
             title: 'Product created',
             description: 'Continue to add product image',
-            duration: 2500,
+            duration: 2500
           });
 
           mutateAsync(res.data.data);
@@ -88,7 +89,7 @@ export const useProduct = (opt?: Options) => {
         .catch(errorHandler)
         .finally(() => setMutating(false));
     },
-    [mutateAsync, toast],
+    [mutateAsync, toast]
   );
 
   return {
@@ -96,8 +97,8 @@ export const useProduct = (opt?: Options) => {
     isLoading,
     mutate,
     isMutating,
-    initNewProduct,
+    createNewProduct,
     setProductImage,
-    setSearchKeyword: useDebouncedCallback((q: string) => setSearchKeyword(q), 500),
+    setSearchKeyword: useDebouncedCallback((q: string) => setSearchKeyword(q), 500)
   };
 };

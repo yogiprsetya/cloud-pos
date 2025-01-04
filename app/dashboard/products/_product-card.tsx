@@ -11,7 +11,7 @@ type Props = Omit<Product, 'createdAt' | 'updatedAt'> & {
 
 export const ProductCard: FC<Props> = ({ image, name, description, price, menuElement }) => (
   <Card className="overflow-hidden">
-    <div className="min-h-40 w-full bg-secondary flex items-center justify-center">
+    <div className="w-full bg-secondary flex items-center h-40 justify-center">
       {image ? <img src={image} alt={name} /> : <Boxes className="text-primary size-8" />}
     </div>
 

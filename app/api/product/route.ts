@@ -12,7 +12,7 @@ import { createInsertSchema } from 'drizzle-zod';
 
 const LIMIT = 10;
 
-const createReqSchema = createInsertSchema(product).omit({ image: true });
+const createReqSchema = createInsertSchema(product);
 
 export const GET = async (req: NextRequest) => {
   const { searchParams } = req.nextUrl;
@@ -22,7 +22,7 @@ export const GET = async (req: NextRequest) => {
     limit: searchParams.get('limit'),
     keyword: searchParams.get('keyword'),
     page: searchParams.get('page'),
-    sortBy: searchParams.get('sortBy') as keyof Pick<Product, 'createdAt' | 'updatedAt'>,
+    sortBy: searchParams.get('sortBy') as keyof Pick<Product, 'createdAt' | 'updatedAt'>
   };
 
   const limitRow = Number(params?.limit || LIMIT);
@@ -49,7 +49,7 @@ export const GET = async (req: NextRequest) => {
         table: product,
         limit: limitRow,
         page: Number(params.page || 1),
-        query: queryFilter,
+        query: queryFilter
       });
 
       return handleSuccessResponse(result, meta);
@@ -75,6 +75,7 @@ export const POST = async (req: NextRequest) => {
           name: data.name,
           price: data.price,
           description: data.description,
+          image: data.image
         })
         .returning();
 

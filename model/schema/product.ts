@@ -3,11 +3,11 @@ import { text, timestamp, pgTable, serial, varchar, integer } from 'drizzle-orm/
 export const product = pgTable('product', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
-  description: varchar('description', { length: 255 }),
-  image: text('image'),
+  description: varchar('description', { length: 255 }).default('').notNull(),
+  image: text('image').notNull(),
   price: integer('price').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull()
 });
 
 export const productVariantLabel = pgTable('product_variant_label', {
@@ -15,7 +15,7 @@ export const productVariantLabel = pgTable('product_variant_label', {
   productId: integer('product_id')
     .references(() => product.id)
     .notNull(),
-  name: varchar('name', { length: 190 }).notNull(),
+  name: varchar('name', { length: 190 }).notNull()
 });
 
 export const productVariantItem = pgTable('product_variant_item', {
@@ -26,5 +26,5 @@ export const productVariantItem = pgTable('product_variant_item', {
   name: varchar('name', { length: 190 }).notNull(),
   price: integer('price').notNull(),
   createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow()
 });

@@ -3,6 +3,8 @@
   "printWidth": 100,
   "tabWidth": 2,
   "semi": true,
-  "trailingComma": "all",
+  "trailingComma": "none",
+  "__ plugins": ["prettier-plugin-tailwindcss"],
+  "__ tailwindFunctions": ["css"],
   "endOfLine": "auto"
 }

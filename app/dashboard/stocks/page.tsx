@@ -19,7 +19,7 @@ const StocksPage = () => {
 
         <nav className="flex gap-2">
           <Button variant="secondary" asChild>
-            <a href="/dashboard/products" aria-label="Add new product">
+            <a href="/dashboard/products/create" aria-label="Add new product">
               <Plus /> Product
             </a>
           </Button>

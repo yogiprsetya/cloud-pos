@@ -36,7 +36,7 @@ export const UploadImage = forwardRef<HTMLInputElement, Props>((props, ref) => {
         setPreview(image);
       }
     },
-    [resizeFile],
+    [resizeFile]
   );
 
   const onUpload = useCallback(async () => {
@@ -44,22 +44,20 @@ export const UploadImage = forwardRef<HTMLInputElement, Props>((props, ref) => {
       const up = await upload(preview);
 
       if (up.success && props.onUploaded && 'data' in up) {
-        props.onUploaded(up.data.fullPath);
+        props.onUploaded(`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/${up.data.fullPath}`);
       }
     }
   }, [preview, props, upload]);
 
   return (
-    <div className={cn('grid grid-cols-4 w-full items-center', props.className)}>
-      <Label htmlFor={elementId} className="text-right mr-4">
-        {props.label}
-      </Label>
+    <div className={cn('space-y-2', props.className)}>
+      <Label htmlFor={elementId}>{props.label}</Label>
 
-      <Input id={elementId} type="file" ref={ref} onChange={handleUpload} className="col-span-3" />
+      <Input id={elementId} type="file" ref={ref} onChange={handleUpload} />
 
       <If condition={preview || props.existingImageUrl}>
         {(src) => (
-          <div className="relative col-span-4 mt-2">
+          <div className="relative">
             <img
               src={typeof src === 'string' ? src : URL.createObjectURL(src)}
               alt="product image preview"
