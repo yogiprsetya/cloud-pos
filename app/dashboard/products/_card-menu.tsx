@@ -5,7 +5,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuTrigger
 } from '~/components/ui/dropdown-menu';
 import { Product } from '~/model/types/product';
 import { FormStepEnum, useManageProductDialogState } from './_manage-product/use-state';
@@ -41,7 +41,9 @@ export const CardMenu: FC<Product> = (props) => {
         </DropdownMenuItem>
 
         <DropdownMenuItem>Manage Variant</DropdownMenuItem>
+
         <DropdownMenuSeparator />
+
         <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -6,7 +6,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
+  DialogTitle
 } from '~/components/ui/dialog';
 import { Button } from '~/components/ui/button';
 import { z } from 'zod';
@@ -19,7 +19,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
 import { FC } from 'react';
@@ -31,19 +31,19 @@ import { FormStepEnum, type DialogState } from './use-state';
 const baseForm: z.ZodType<Pick<Product, 'name' | 'price' | 'description'>> = z.object({
   description: z.string(),
   name: z.string().min(2).max(100),
-  price: z.coerce.number().min(50),
+  price: z.coerce.number().min(50)
 });
 
 const imageForm: z.ZodType<Pick<Product, 'image'>> = z.object({
   description: z.string(),
   name: z.string().min(2).max(100),
   price: z.coerce.number().min(50),
-  image: z.string().min(1).nonempty(),
+  image: z.string().min(1).nonempty()
 });
 
 type Props = DialogState & {
   initStep?: FormStepEnum;
-  handleCreate: ReturnType<typeof useProduct>['initNewProduct'];
+  handleCreate: ReturnType<typeof useProduct>['createNewProduct'];
   onCreated: () => void;
   onSetImage: ReturnType<typeof useProduct>['setProductImage'];
 };
@@ -55,17 +55,17 @@ const Main: FC<Pick<Props, 'handleCreate' | 'onCreated' | 'initData'>> = (props)
       ? {
           name: props.initData.name,
           price: props.initData.price,
-          description: props.initData.description,
+          description: props.initData.description
         }
       : {
           name: '',
           price: 0,
-          description: '',
-        },
+          description: ''
+        }
   });
 
   const onSubmit = (values: z.infer<typeof baseForm>) => {
-    props.handleCreate({ name: values.name, description: values.description, price: values.price });
+    props.handleCreate({ name: values.name, description: values.description, price: values.price, image: values. });
   };
 
   return (
@@ -137,8 +137,8 @@ const ProductImage: FC<Pick<Props, 'initData' | 'onSetImage'>> = ({ initData, on
   const form = useForm<z.infer<typeof imageForm>>({
     resolver: zodResolver(imageForm),
     defaultValues: {
-      image: '',
-    },
+      image: ''
+    }
   });
 
   const onSubmit = (values: z.infer<typeof imageForm>) => {
@@ -168,7 +168,7 @@ export const ManageProduct: FC<Omit<Props, 'onCreated' | 'setInitData' | 'setIni
   handleCreate,
   isOpen,
   toggleModal,
-  onSetImage,
+  onSetImage
 }) => {
   const RenderForm = {
     Main: (
@@ -181,7 +181,7 @@ export const ManageProduct: FC<Omit<Props, 'onCreated' | 'setInitData' | 'setIni
         }}
       />
     ),
-    Image: <ProductImage onSetImage={onSetImage} initData={initData} />,
+    Image: <ProductImage onSetImage={onSetImage} initData={initData} />
   };
 
   return (

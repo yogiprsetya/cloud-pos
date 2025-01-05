@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { handleSuccessResponse } from 'api-lib/handle-success-res';
 import { File } from 'node:buffer';
@@ -16,10 +16,10 @@ const fileSchema = z
   .instanceof(File)
   .refine((file) => file.size <= limit, { message: 'File size must be under 5MB' })
   .refine((file) => ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'].includes(file.type), {
-    message: 'Only PNG, WebP and JPEG are allowed',
+    message: 'Only PNG, WebP and JPEG are allowed'
   });
 
-export async function POST(req: NextResponse) {
+export async function POST(req: NextRequest) {
   try {
     const body = await req.formData();
     const file = body.get('file');
@@ -36,7 +36,7 @@ export async function POST(req: NextResponse) {
       .from(supabaseBucket)
       .upload(fileName, Buffer.from(await data.arrayBuffer()), {
         contentType: data.type,
-        upsert: false,
+        upsert: false
       });
 
     if (uploadError) {

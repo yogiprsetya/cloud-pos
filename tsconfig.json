@@ -23,6 +23,12 @@
       "api-lib/*": ["./app/api/_lib/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/dashboard/products/_manage-product/index.archive"
+  ],
   "exclude": ["node_modules"]
 }
