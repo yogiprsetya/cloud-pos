@@ -33,6 +33,7 @@ export const ProductPortfolio: FC<Props> = ({ isLoading, setSearchKeyword, data 
     columns,
     getCoreRowModel: getCoreRowModel()
   });
+  console.log(table.getRowModel().rows);
 
   return (
     <>
@@ -48,7 +49,26 @@ export const ProductPortfolio: FC<Props> = ({ isLoading, setSearchKeyword, data 
             condition={table.getRowModel().rows?.length}
             fallback="Data product is empty, please create."
           >
-            {table.getRowModel().rows.map((row) => (
+            {table.getRowModel().rows.map((row) => {
+              const cellMenu = row.getVisibleCells().find((cell) => cell.column.id === 'menu');
+              const menuEl = cellMenu
+                ? flexRender(cellMenu.column.columnDef.cell, cellMenu.getContext())
+                : null;
+
+              return (
+                <ProductCard
+                  key={row.original.id}
+                  id={row.original.id}
+                  name={row.original.name}
+                  description={row.original.description}
+                  image={row.original.image}
+                  price={row.original.price}
+                  menuElement={menuEl}
+                />
+              );
+            })}
+
+            {/* {table.getRowModel().rows.map((row) => (
               <Fragment key={row.id}>
                 {row.getVisibleCells().map((cell) => {
                   const menuEl = cell.row
@@ -57,7 +77,7 @@ export const ProductPortfolio: FC<Props> = ({ isLoading, setSearchKeyword, data 
 
                   return (
                     <ProductCard
-                      key={row.original.id}
+                      key={cell.column.id}
                       id={row.original.id}
                       name={row.original.name}
                       description={row.original.description}
@@ -68,7 +88,7 @@ export const ProductPortfolio: FC<Props> = ({ isLoading, setSearchKeyword, data 
                   );
                 })}
               </Fragment>
-            ))}
+            ))} */}
           </If>
         </div>
       )}
