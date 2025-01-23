@@ -15,20 +15,20 @@ type Stock = {
 export const columns: ColumnDef<Stock>[] = [
   {
     header: 'SKU',
-    accessorKey: 'sku',
+    accessorKey: 'sku'
   },
   {
     header: 'Name',
-    accessorKey: 'name',
+    accessorKey: 'name'
   },
   {
     header: 'Price',
-    accessorKey: 'price',
+    accessorKey: 'price'
   },
   {
     header: 'Quantity',
-    accessorKey: 'quantity',
-  },
+    accessorKey: 'quantity'
+  }
 ];
 
 export const StockDataTable = () => {

@@ -3,12 +3,14 @@
 import { Searchbar } from '~/components/pattern/Searchbar';
 import { Loading } from '~/components/ui/loading';
 import { useProduct } from '~/services/use-product';
-import { ProductCard } from './_product-card';
-import { CardMenu } from './_card-menu';
+import { ProductCardMenu } from './product-card-menu';
 import { If } from '~/components/ui/if';
 import { FC, Fragment, useMemo } from 'react';
 import { Product } from '~/model/types/product';
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { Card } from '~/components/ui/card';
+import { Boxes } from 'lucide-react';
+import { formatRp } from '~/utils/rupiah';
 
 type Props = ReturnType<typeof useProduct>;
 
@@ -22,7 +24,7 @@ export const ProductPortfolio: FC<Props> = ({ isLoading, setSearchKeyword, data 
       {
         header: 'Menu',
         accessorKey: 'menu',
-        cell: ({ row }) => <CardMenu {...row.original} />
+        cell: ({ row }) => <ProductCardMenu {...row.original} />
       }
     ],
     []
@@ -33,7 +35,6 @@ export const ProductPortfolio: FC<Props> = ({ isLoading, setSearchKeyword, data 
     columns,
     getCoreRowModel: getCoreRowModel()
   });
-  console.log(table.getRowModel().rows);
 
   return (
     <>
@@ -56,39 +57,34 @@ export const ProductPortfolio: FC<Props> = ({ isLoading, setSearchKeyword, data 
                 : null;
 
               return (
-                <ProductCard
-                  key={row.original.id}
-                  id={row.original.id}
-                  name={row.original.name}
-                  description={row.original.description}
-                  image={row.original.image}
-                  price={row.original.price}
-                  menuElement={menuEl}
-                />
+                <Card key={row.original.id} className="overflow-hidden">
+                  <div className="h-40 w-full bg-secondary flex items-center justify-center">
+                    {row.original.image ? (
+                      <img
+                        src={row.original.image}
+                        alt={row.original.name}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <Boxes className="text-primary size-8" />
+                    )}
+                  </div>
+
+                  <div className="p-4 h-full">
+                    <div className="flex justify-between items-center">
+                      <h3 className="font-semibold">{row.original.name}</h3>
+                      {menuEl}
+                    </div>
+
+                    <p className="text-xs">{formatRp(row.original.price)}</p>
+
+                    <If condition={row.original.description}>
+                      <p className="text-sm mt-2">{row.original.description}</p>
+                    </If>
+                  </div>
+                </Card>
               );
             })}
-
-            {/* {table.getRowModel().rows.map((row) => (
-              <Fragment key={row.id}>
-                {row.getVisibleCells().map((cell) => {
-                  const menuEl = cell.row
-                    .getVisibleCells()
-                    .find(({ column }) => column.id === 'menu');
-
-                  return (
-                    <ProductCard
-                      key={cell.column.id}
-                      id={row.original.id}
-                      name={row.original.name}
-                      description={row.original.description}
-                      image={row.original.image}
-                      price={row.original.price}
-                      menuElement={flexRender(menuEl?.column.columnDef.cell, cell.getContext())}
-                    />
-                  );
-                })}
-              </Fragment>
-            ))} */}
           </If>
         </div>
       )}

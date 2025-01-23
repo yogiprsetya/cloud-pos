@@ -8,10 +8,10 @@ import {
   DropdownMenuTrigger
 } from '~/components/ui/dropdown-menu';
 import { Product } from '~/model/types/product';
-import { FormStepEnum, useManageProductDialogState } from './_manage-product/use-state';
+import { useProductState } from './use-state';
 
-export const CardMenu: FC<Product> = (props) => {
-  const { toggleModal, setInitStep, setInitData } = useManageProductDialogState();
+export const ProductCardMenu: FC<Product> = (product) => {
+  const { openDeleteModal } = useProductState();
 
   return (
     <DropdownMenu>
@@ -20,21 +20,13 @@ export const CardMenu: FC<Product> = (props) => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent>
-        <DropdownMenuItem
-          onClick={() => {
-            setInitData(props);
-            setInitStep(FormStepEnum.Main);
-            toggleModal();
-          }}
-        >
-          Edit
-        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => openDeleteModal(product)}>Edit</DropdownMenuItem>
 
         <DropdownMenuItem
           onClick={() => {
-            setInitData(props);
-            setInitStep(FormStepEnum.Image);
-            toggleModal();
+            // setInitData(props);
+            // setInitStep(FormStepEnum.Image);
+            // toggleModal();
           }}
         >
           Change Image

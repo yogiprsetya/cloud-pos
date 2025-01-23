@@ -1,5 +1,5 @@
 import { LayoutView } from '../../_layout-view';
-import { ManageProduct } from '../_product-manager';
+import { ManageProduct } from '../product-manager';
 
 const CreateProductPage = () => {
   return (

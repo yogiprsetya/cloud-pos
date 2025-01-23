@@ -7,7 +7,9 @@ import dynamic from 'next/dynamic';
 import { useProduct } from '~/services/use-product';
 // import { useManageProductDialogState } from './_manage-product/use-state';
 
-const ProductPortfolio = dynamic(() => import('./_data-table').then((c) => c.ProductPortfolio));
+const ProductPortfolio = dynamic(() =>
+  import('./product-data-card').then((c) => c.ProductPortfolio)
+);
 // const ManageProduct = dynamic(() => import('./_manage-product').then((c) => c.ManageProduct));
 
 export const ProductView = () => {
