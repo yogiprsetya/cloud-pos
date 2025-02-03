@@ -5,6 +5,8 @@ import { Button } from '~/components/ui/button';
 import { Plus } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useProduct } from '~/services/use-product';
+import { ModalDeleteProduct } from './product-delete-modal';
+import { useProductState } from './use-state';
 // import { useManageProductDialogState } from './_manage-product/use-state';
 
 const ProductPortfolio = dynamic(() =>
@@ -13,7 +15,8 @@ const ProductPortfolio = dynamic(() =>
 // const ManageProduct = dynamic(() => import('./_manage-product').then((c) => c.ManageProduct));
 
 export const ProductView = () => {
-  const state = useProduct();
+  const service = useProduct();
+  const state = useProductState();
   // const { isOpen, toggleModal, initStep, initData } = useManageProductDialogState();
 
   return (
@@ -28,7 +31,7 @@ export const ProductView = () => {
         </Button>
       }
     >
-      <ProductPortfolio {...state} />
+      <ProductPortfolio {...service} />
 
       {/* <ManageProduct
         handleCreate={state.createNewProduct}
@@ -38,6 +41,12 @@ export const ProductView = () => {
         initStep={initStep}
         initData={initData}
       /> */}
+
+      <ModalDeleteProduct
+        open={state.isDeleteModalOpen}
+        onOpenChange={() => state.closeDeleteModal()}
+        data={state.product}
+      />
     </LayoutView>
   );
 };

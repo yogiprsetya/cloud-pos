@@ -20,7 +20,7 @@ export const ProductCardMenu: FC<Product> = (product) => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent>
-        <DropdownMenuItem onClick={() => openDeleteModal(product)}>Edit</DropdownMenuItem>
+        <DropdownMenuItem>Edit</DropdownMenuItem>
 
         <DropdownMenuItem
           onClick={() => {
@@ -36,7 +36,9 @@ export const ProductCardMenu: FC<Product> = (product) => {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+        <DropdownMenuItem className="text-destructive" onClick={() => openDeleteModal(product)}>
+          Delete
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

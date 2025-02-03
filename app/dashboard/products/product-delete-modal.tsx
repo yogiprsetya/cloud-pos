@@ -1,24 +1,27 @@
-import { FC, ReactNode } from 'react';
+import { ComponentPropsWithoutRef, FC } from 'react';
+import { Button } from '~/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
-  DialogTrigger
+  DialogTitle
 } from '~/components/ui/dialog';
 import { type Product } from '~/model/types/product';
 
-type Props = {
-  data: Product;
-  trigger: ReactNode;
+type DialogProps = Omit<ComponentPropsWithoutRef<typeof Dialog>, 'children'>;
+
+type Props = DialogProps & {
+  data?: Product;
 };
 
-export const ModalDeleteProduct: FC<Props> = ({ trigger }) => {
+export const ModalDeleteProduct: FC<Props> = ({ data, ...props }) => {
+  if (!data) return null;
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
+    <Dialog {...props}>
+      {/* <DialogTrigger asChild>{trigger}</DialogTrigger> */}
 
       <DialogContent>
         <DialogHeader>
@@ -26,10 +29,13 @@ export const ModalDeleteProduct: FC<Props> = ({ trigger }) => {
         </DialogHeader>
 
         <DialogDescription>
-          Are you sure you want to delete this product?, this action cannot be undone.
+          Are you sure you want to delete <b>{data?.name}</b>?, this action cannot be undone.
         </DialogDescription>
 
-        <DialogFooter></DialogFooter>
+        <DialogFooter>
+          <Button variant="secondary">Cancel</Button>
+          <Button variant="destructive">Delete</Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

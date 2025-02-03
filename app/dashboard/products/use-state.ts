@@ -11,6 +11,7 @@ type State = {
   isDeleteModalOpen: boolean;
   product?: Product;
   openDeleteModal: (product: Product) => void;
+  closeDeleteModal: () => void;
   // isOpen: boolean;
   // toggleModal: () => void;
   // initData: Product | null;
@@ -22,7 +23,7 @@ type State = {
 export const useProductState = create<State>()(
   devtools((set) => ({
     isDeleteModalOpen: false,
-    openDeleteModal: () => set((state) => ({ isDeleteModalOpen: true, product: state.product })),
+    openDeleteModal: (product) => set(() => ({ isDeleteModalOpen: true, product })),
     closeDeleteModal: () => set(() => ({ isDeleteModalOpen: false, product: undefined }))
     // toggleModal: () =>
     //   set((state: DialogState) => {
