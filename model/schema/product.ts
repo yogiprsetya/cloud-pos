@@ -15,7 +15,9 @@ export const productVariantLabel = pgTable('product_variant_label', {
   productId: integer('product_id')
     .references(() => product.id)
     .notNull(),
-  name: varchar('name', { length: 190 }).notNull()
+  name: varchar('name', { length: 190 }).notNull(),
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull()
 });
 
 export const productVariantItem = pgTable('product_variant_item', {

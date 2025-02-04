@@ -9,7 +9,7 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem,
+  SidebarMenuItem
 } from '~/components/ui/sidebar';
 import { Home, Package2, GalleryVerticalEnd, ShoppingCart, Shirt } from 'lucide-react';
 import { usePathname } from 'next/navigation';
@@ -18,23 +18,23 @@ import { If } from '~/components/ui/if';
 
 const productItems = [
   {
-    title: 'Stock',
-    url: '/dashboard/stocks',
-    icon: Package2,
-  },
-  {
     title: 'Product',
     url: '/dashboard/products',
-    icon: Shirt,
+    icon: Shirt
   },
+  {
+    title: 'Stock',
+    url: '/dashboard/stocks',
+    icon: Package2
+  }
 ];
 
 const posItems = [
   {
     title: 'Point of Sale',
     url: '/dashboard/point-of-sale',
-    icon: ShoppingCart,
-  },
+    icon: ShoppingCart
+  }
 ];
 
 const Groups = (props: { children: ReactNode; title?: string }) => (

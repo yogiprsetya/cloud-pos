@@ -21,8 +21,6 @@ export const ModalDeleteProduct: FC<Props> = ({ data, ...props }) => {
 
   return (
     <Dialog {...props}>
-      {/* <DialogTrigger asChild>{trigger}</DialogTrigger> */}
-
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Add new product</DialogTitle>
