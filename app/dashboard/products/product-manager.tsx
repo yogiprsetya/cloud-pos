@@ -3,28 +3,44 @@
 import { Button } from '~/components/ui/button';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { Product } from '~/model/types/product';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '~/components/ui/form';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { Product, ProductVariantItem, ProductVariantLabel } from '~/model/types/product';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
 import { FC } from 'react';
 import { UploadImage } from '~/components/pattern/UploadImage';
 import { Textarea } from '~/components/ui/textarea';
 import { useProduct } from '~/services/use-product';
 import { Text } from '~/components/ui/text';
+import { Plus } from 'lucide-react';
+import { Collapsible } from '~/components/ui/collapsible';
 
-const schema: z.ZodType<Omit<Product, 'id' | 'createdAt' | 'updatedAt'>> = z.object({
+type SchemaType = Omit<Product, 'id' | 'createdAt' | 'updatedAt'> & {
+  variant?: Array<
+    Pick<ProductVariantLabel, 'name'> & {
+      items: Pick<ProductVariantItem, 'name' | 'price'>[];
+    }
+  >;
+};
+
+const schema: z.ZodType<SchemaType> = z.object({
   description: z.string().min(1).nonempty(),
   name: z.string().min(2).max(100),
   price: z.coerce.number().min(50),
-  image: z.string().nonempty({ message: 'Please upload product image' }).url()
+  image: z.string().nonempty({ message: 'Please upload product image' }).url(),
+  variant: z
+    .array(
+      z.object({
+        name: z.string().min(2).max(100),
+        items: z.array(
+          z.object({
+            name: z.string().min(2).max(100),
+            price: z.number().min(1)
+          })
+        )
+      })
+    )
+    .optional()
 });
 
 type Props = {
@@ -44,6 +60,11 @@ export const ManageProduct: FC<Props> = ({ initData }) => {
     }
   });
 
+  const variantLabel = useFieldArray({
+    control: form.control,
+    name: 'variant'
+  });
+
   const onSubmit = (values: z.infer<typeof schema>) => {
     createNewProduct(values);
   };
@@ -51,7 +72,7 @@ export const ManageProduct: FC<Props> = ({ initData }) => {
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} id="manage-product">
+        <form onSubmit={form.handleSubmit(onSubmit)} id="manage-product" className="space-y-4">
           <div className="grid grid-cols-2 gap-6 border bg-card text-card-foreground shadow-sm rounded-lg p-6">
             <Text tag="h1" variant="heading-4" className="col-span-2">
               Informasi Produk
@@ -116,16 +137,55 @@ export const ManageProduct: FC<Props> = ({ initData }) => {
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <UploadImage
-                    label="Image"
-                    existingImageUrl={field.value}
-                    onUploaded={field.onChange}
-                  />
+                  <UploadImage label="Image" existingImageUrl={field.value} onUploaded={field.onChange} />
 
                   <FormMessage />
                 </FormItem>
               )}
             />
+          </div>
+
+          <div className="grid grid-cols-2 gap-6 border bg-card text-card-foreground shadow-sm rounded-lg p-6">
+            <Text tag="h1" variant="heading-4" className="col-span-2">
+              Variant
+            </Text>
+
+            <div className="space-y-4">
+              {variantLabel.fields.map((field, index) => (
+                <Collapsible
+                  label={
+                    <FormField
+                      control={form.control}
+                      name={`variant.${index}.name`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input size={100} className="h-9" placeholder="Ex: size, color" {...field} />
+                          </FormControl>
+
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  }
+                  key={field.id}
+                >
+                  <p>test</p>
+                </Collapsible>
+              ))}
+            </div>
+
+            <div className="flex">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => {
+                  variantLabel.append({ name: '', items: [] });
+                }}
+              >
+                <Plus className="size-4" /> Add variant
+              </Button>
+            </div>
           </div>
         </form>
       </Form>
