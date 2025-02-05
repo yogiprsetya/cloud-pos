@@ -1,10 +1,7 @@
 'use client';
 
 import { Button } from '~/components/ui/button';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useFieldArray, useForm } from 'react-hook-form';
-import { Product, ProductVariantItem, ProductVariantLabel } from '~/model/types/product';
+import { Product } from '~/model/types/product';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
 import { FC } from 'react';
@@ -12,36 +9,11 @@ import { UploadImage } from '~/components/pattern/UploadImage';
 import { Textarea } from '~/components/ui/textarea';
 import { useProduct } from '~/services/use-product';
 import { Text } from '~/components/ui/text';
-import { Plus } from 'lucide-react';
+import { Plus, Trash } from 'lucide-react';
 import { Collapsible } from '~/components/ui/collapsible';
-
-type SchemaType = Omit<Product, 'id' | 'createdAt' | 'updatedAt'> & {
-  variant?: Array<
-    Pick<ProductVariantLabel, 'name'> & {
-      items: Pick<ProductVariantItem, 'name' | 'price'>[];
-    }
-  >;
-};
-
-const schema: z.ZodType<SchemaType> = z.object({
-  description: z.string().min(1).nonempty(),
-  name: z.string().min(2).max(100),
-  price: z.coerce.number().min(50),
-  image: z.string().nonempty({ message: 'Please upload product image' }).url(),
-  variant: z
-    .array(
-      z.object({
-        name: z.string().min(2).max(100),
-        items: z.array(
-          z.object({
-            name: z.string().min(2).max(100),
-            price: z.number().min(1)
-          })
-        )
-      })
-    )
-    .optional()
-});
+import { ProductManagerType } from './model';
+import { UseForms } from './use-forms';
+import { cn } from '~/utils/css';
 
 type Props = {
   initData?: Product;
@@ -49,23 +21,9 @@ type Props = {
 
 export const ManageProduct: FC<Props> = ({ initData }) => {
   const { createNewProduct } = useProduct();
+  const { form, variantLabel } = UseForms();
 
-  const form = useForm<z.infer<typeof schema>>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      name: '',
-      price: 0,
-      description: '',
-      image: ''
-    }
-  });
-
-  const variantLabel = useFieldArray({
-    control: form.control,
-    name: 'variant'
-  });
-
-  const onSubmit = (values: z.infer<typeof schema>) => {
+  const onSubmit = (values: ProductManagerType) => {
     createNewProduct(values);
   };
 
@@ -150,25 +108,36 @@ export const ManageProduct: FC<Props> = ({ initData }) => {
               Variant
             </Text>
 
-            <div className="space-y-4">
+            <div className={cn('space-y-4', !variantLabel.fields.length && 'hidden')}>
               {variantLabel.fields.map((field, index) => (
                 <Collapsible
-                  label={
-                    <FormField
-                      control={form.control}
-                      name={`variant.${index}.name`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Input size={100} className="h-9" placeholder="Ex: size, color" {...field} />
-                          </FormControl>
-
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  }
                   key={field.id}
+                  label={
+                    <div className="flex items-center space-x-4">
+                      <FormField
+                        control={form.control}
+                        name={`variant.${index}.name`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input size={100} className="h-9" placeholder="Ex: size, color" {...field} />
+                            </FormControl>
+
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+
+                      <Button
+                        size="icon"
+                        variant="destructive"
+                        className="shrink-0 size-9 border-0"
+                        onClick={() => variantLabel.remove(index)}
+                      >
+                        <Trash className="size-4" />
+                      </Button>
+                    </div>
+                  }
                 >
                   <p>test</p>
                 </Collapsible>
