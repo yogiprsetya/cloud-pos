@@ -21,7 +21,7 @@ export const ProductManagerSchema: z.ZodType<ProductManagerSchemaType> = z.objec
         items: z.array(
           z.object({
             name: z.string().min(2).max(100),
-            price: z.number().min(1)
+            price: z.coerce.number().min(0)
           })
         )
       })

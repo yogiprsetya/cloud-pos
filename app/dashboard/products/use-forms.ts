@@ -13,13 +13,13 @@ export const UseForms = () => {
     }
   });
 
-  const variantLabel = useFieldArray({
+  const variant = useFieldArray({
     control: form.control,
     name: 'variant'
   });
 
   return {
-    variantLabel,
+    variant,
     form
   };
 };
