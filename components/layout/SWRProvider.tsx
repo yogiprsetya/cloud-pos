@@ -7,8 +7,8 @@ import { fetcher } from '~/config/http-client';
 const swrOptions = {
   fetcher,
   shouldRetryOnError: true,
-  revalidateOnFocus: true,
-  errorRetryInterval: 5000,
+  revalidateOnFocus: false,
+  errorRetryInterval: 5000
 };
 
 export const SWRProvider: FC<{ children: ReactNode }> = (props) => (

@@ -14,7 +14,9 @@ import { Collapsible } from '~/components/ui/collapsible';
 import { ProductManagerType } from './model';
 import { UseForms } from './use-forms';
 import { cn } from '~/utils/css';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFieldArray } from 'react-hook-form';
+import { formatRp } from '~/utils/rupiah';
+import { If } from '~/components/ui/if';
 
 const MAX_ITEMS = 7;
 const MAX_VARIANTS = 4;
@@ -28,7 +30,9 @@ type VariantItemsFormProps = {
 };
 
 const VariantItemsForm: FC<VariantItemsFormProps> = ({ itemIndex }) => {
-  const { control } = useFormContext();
+  const { formContext } = UseForms();
+
+  const basePrice = formContext.watch('price');
 
   const item = useFieldArray({
     name: `variant.${itemIndex}.items`
@@ -40,7 +44,7 @@ const VariantItemsForm: FC<VariantItemsFormProps> = ({ itemIndex }) => {
         {item.fields.map((field, index) => (
           <li key={field.id} className="flex gap-2">
             <FormField
-              control={control}
+              control={formContext.control}
               name={`variant.${itemIndex}.items.${index}.name`}
               render={({ field }) => (
                 <FormItem>
@@ -51,11 +55,16 @@ const VariantItemsForm: FC<VariantItemsFormProps> = ({ itemIndex }) => {
             />
 
             <FormField
-              control={control}
+              control={formContext.control}
               name={`variant.${itemIndex}.items.${index}.price`}
               render={({ field }) => (
                 <FormItem>
-                  <Input className="h-9" placeholder="additional price of variant" {...field} />
+                  <Input className="h-9" type="number" placeholder="price of variant item" {...field} />
+
+                  <If condition={basePrice && field.value && field.value > basePrice}>
+                    <small>Price less base price {formatRp(basePrice)}</small>
+                  </If>
+
                   <FormMessage />
                 </FormItem>
               )}
@@ -70,7 +79,7 @@ const VariantItemsForm: FC<VariantItemsFormProps> = ({ itemIndex }) => {
         className="shrink-0 size-9"
         aria-label="add variant"
         disabled={item.fields.length >= MAX_ITEMS}
-        onClick={() => item.append({ name: '' })}
+        onClick={() => item.append({ name: '', price: '' })}
       >
         <PlusCircle className="size-4" />
       </Button>

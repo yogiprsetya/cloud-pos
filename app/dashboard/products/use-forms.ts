@@ -1,4 +1,4 @@
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { ProductManagerSchema, ProductManagerType } from './model';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -18,8 +18,11 @@ export const UseForms = () => {
     name: 'variant'
   });
 
+  const formContext = useFormContext<ProductManagerType>();
+
   return {
     variant,
-    form
+    form,
+    formContext
   };
 };
