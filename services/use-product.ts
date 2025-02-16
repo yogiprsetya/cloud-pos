@@ -1,4 +1,4 @@
-import { Product } from '~/model/types/product';
+import { Product, ProductVariant, ProductWithVariants } from '~/model/types/product';
 import useSWR from 'swr';
 import { HttpRequest } from '~/model/types/http';
 import { useCallback, useState } from 'react';
@@ -48,16 +48,32 @@ export const useProduct = (opt?: Options) => {
     [mutate]
   );
 
+  const createVaraint = useCallback((form: Partial<ProductVariant>) => {
+    return httpClient
+      .post<HttpRequest<ProductVariant>>('product/variant', form)
+      .then((res) => res)
+      .catch(errorHandler)
+      .finally(() => setMutating(false));
+  }, []);
+
   const createNewProduct = useCallback(
-    (form: Pick<Product, 'name' | 'description' | 'price' | 'image'>) => {
+    (form: Partial<ProductWithVariants>) => {
       setMutating(true);
 
+      const { variants, ...product } = form;
+
       return httpClient
-        .post<HttpRequest<Product>>('product', form)
+        .post<HttpRequest<Product>>('product', { ...product })
         .then((res) => {
+          if (variants?.length) {
+            variants.forEach((variant) => {
+              createVaraint({ ...variant, productId: res.data.data.id });
+            });
+          }
+
           toast({
             title: 'Product created',
-            description: 'Continue to add product variant',
+            description: 'New product added successfully',
             duration: 2500
           });
 
@@ -67,7 +83,7 @@ export const useProduct = (opt?: Options) => {
         .catch(errorHandler)
         .finally(() => setMutating(false));
     },
-    [mutateAsync, toast]
+    [createVaraint, mutateAsync, toast]
   );
 
   const setProductImage = useCallback(

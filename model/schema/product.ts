@@ -4,10 +4,10 @@ export const product = pgTable('product', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
   description: varchar('description', { length: 255 }).default('').notNull(),
-  image: text('image').notNull(),
+  image: text('image').default(''),
   price: integer('price').notNull(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull()
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow()
 });
 
 export const productVariantLabel = pgTable('product_variant_label', {
@@ -16,8 +16,8 @@ export const productVariantLabel = pgTable('product_variant_label', {
     .references(() => product.id)
     .notNull(),
   name: varchar('name', { length: 190 }).notNull(),
-  createdAt: timestamp('created_at').defaultNow().notNull(),
-  updatedAt: timestamp('updated_at').defaultNow().notNull()
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow()
 });
 
 export const productVariantItem = pgTable('product_variant_item', {

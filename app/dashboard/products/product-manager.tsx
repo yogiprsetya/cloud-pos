@@ -61,8 +61,8 @@ const VariantItemsForm: FC<VariantItemsFormProps> = ({ itemIndex }) => {
                 <FormItem>
                   <Input className="h-9" type="number" placeholder="price of variant item" {...field} />
 
-                  <If condition={basePrice && field.value && field.value > basePrice}>
-                    <small>Price less base price {formatRp(basePrice)}</small>
+                  <If condition={basePrice && field.value && field.value < basePrice}>
+                    <small className="text-warning">Warn: lower then base-price {formatRp(basePrice)}</small>
                   </If>
 
                   <FormMessage />

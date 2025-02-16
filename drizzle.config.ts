@@ -4,11 +4,11 @@ import '~/config/env';
 
 export default defineConfig({
   dialect: 'postgresql',
-  schema: './domain/schema/*',
+  schema: './model/schema/*',
   out: './drizzle',
   dbCredentials: {
-    url: process.env.POSTGRES_URL || '',
+    url: process.env.POSTGRES_URL || ''
   },
   verbose: true,
-  strict: true,
+  strict: true
 });
