@@ -1,10 +1,9 @@
 'use client';
 
 import { Button } from '~/components/ui/button';
-import { Product } from '~/model/types/product';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '~/components/ui/form';
 import { Input } from '~/components/ui/input';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { UploadImage } from '~/components/pattern/UploadImage';
 import { Textarea } from '~/components/ui/textarea';
 import { useProduct } from '~/services/use-product';
@@ -17,12 +16,13 @@ import { cn } from '~/utils/css';
 import { useFieldArray } from 'react-hook-form';
 import { formatRp } from '~/utils/rupiah';
 import { If } from '~/components/ui/if';
+import { useProductId } from '~/services/use-product-id';
 
 const MAX_ITEMS = 7;
 const MAX_VARIANTS = 4;
 
 type Props = {
-  initData?: Product;
+  id?: string;
 };
 
 type VariantItemsFormProps = {
@@ -35,7 +35,7 @@ const VariantItemsForm: FC<VariantItemsFormProps> = ({ itemIndex }) => {
   const basePrice = formContext.watch('price');
 
   const item = useFieldArray({
-    name: `variant.${itemIndex}.items`
+    name: `variants.${itemIndex}.items`
   });
 
   return (
@@ -45,7 +45,7 @@ const VariantItemsForm: FC<VariantItemsFormProps> = ({ itemIndex }) => {
           <li key={field.id} className="flex gap-2">
             <FormField
               control={formContext.control}
-              name={`variant.${itemIndex}.items.${index}.name`}
+              name={`variants.${itemIndex}.items.${index}.name`}
               render={({ field }) => (
                 <FormItem>
                   <Input className="h-9" placeholder="variant, ex: red, XL" {...field} />
@@ -56,7 +56,7 @@ const VariantItemsForm: FC<VariantItemsFormProps> = ({ itemIndex }) => {
 
             <FormField
               control={formContext.control}
-              name={`variant.${itemIndex}.items.${index}.price`}
+              name={`variants.${itemIndex}.items.${index}.price`}
               render={({ field }) => (
                 <FormItem>
                   <Input className="h-9" type="number" placeholder="price of variant item" {...field} />
@@ -87,12 +87,28 @@ const VariantItemsForm: FC<VariantItemsFormProps> = ({ itemIndex }) => {
   );
 };
 
-export const ManageProduct: FC<Props> = ({ initData }) => {
+export const ManageProduct: FC<Props> = ({ id }) => {
   const { createNewProduct } = useProduct();
   const { form, variant } = UseForms();
+  console.log('form', id);
+
+  const { data, isLoading } = useProductId({ id });
+
+  useEffect(() => {
+    if (data) {
+      console.log('data', data.data);
+
+      form.reset(data.data);
+    }
+  }, [data, form]);
+
+  if (id && isLoading) {
+    return <div>Loading...</div>;
+  }
 
   const onSubmit = (values: ProductManagerType) => {
-    createNewProduct(values);
+    const { variants, ...value } = values;
+    createNewProduct({ ...value, variants });
   };
 
   return (
@@ -183,7 +199,7 @@ export const ManageProduct: FC<Props> = ({ initData }) => {
                     <div className="flex items-center space-x-4 w-full">
                       <FormField
                         control={form.control}
-                        name={`variant.${index}.name`}
+                        name={`variants.${index}.name`}
                         render={({ field }) => (
                           <FormItem className="w-full">
                             <FormControl>
@@ -229,7 +245,7 @@ export const ManageProduct: FC<Props> = ({ initData }) => {
 
       <div className=" w-full -bottom-6 mt-6 flex justify-center left-0">
         <Button type="submit" form="manage-product">
-          {initData ? 'Save Changes' : 'Create Product'}
+          {id ? 'Save Changes' : 'Create Product'}
         </Button>
       </div>
     </>

@@ -24,7 +24,7 @@ type Props = DialogProps & {
 };
 
 type SchemaType = {
-  variant: Array<
+  variants: Array<
     Pick<ProductVariantLabel, 'name'> & {
       items: Pick<ProductVariantItem, 'name' | 'price'>[];
     }
@@ -32,7 +32,7 @@ type SchemaType = {
 };
 
 const schema: z.ZodType<SchemaType> = z.object({
-  variant: z.array(
+  variants: z.array(
     z.object({
       name: z.string().min(2).max(100),
       items: z.array(
@@ -54,7 +54,7 @@ export const ProductManageVariant: FC<Props> = ({ data, ...props }) => {
 
   const variant = useFieldArray({
     control: form.control,
-    name: 'variant'
+    name: 'variants'
   });
 
   const onSubmit = (values: FormValues) => {
@@ -79,7 +79,7 @@ export const ProductManageVariant: FC<Props> = ({ data, ...props }) => {
               <div key={field.id}>
                 <FormField
                   control={form.control}
-                  name={`variant.${index}.name`}
+                  name={`variants.${index}.name`}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Label Name</FormLabel>

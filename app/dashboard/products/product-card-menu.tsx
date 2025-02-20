@@ -20,7 +20,9 @@ export const ProductCardMenu: FC<Product> = (product) => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent>
-        <DropdownMenuItem>Edit</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <a href={`/dashboard/products/${product.id}`}>Edit</a>
+        </DropdownMenuItem>
 
         <DropdownMenuItem
           onClick={() => {

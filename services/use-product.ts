@@ -1,4 +1,4 @@
-import { Product, ProductVariant, ProductWithVariants } from '~/model/types/product';
+import { Product, ProductVariant, ProductVariantItem, ProductVariantLabel } from '~/model/types/product';
 import useSWR from 'swr';
 import { HttpRequest } from '~/model/types/http';
 import { useCallback, useState } from 'react';
@@ -6,6 +6,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { httpClient } from '../config/http-client';
 import { useToast } from '~/hooks/useToast';
 import { errorHandler } from '~/utils/error-handler';
+import { ProductManagerSchemaType } from '~/app/dashboard/products/model';
 
 const LIMIT = 12;
 
@@ -14,6 +15,12 @@ type Options = {
   sort?: 'asc' | 'desc';
   sortBy?: keyof Pick<Product, 'createdAt' | 'updatedAt'>;
   page?: number;
+};
+
+type CreateVariant = {
+  name: ProductVariantLabel['name'];
+  productId: ProductVariantLabel['productId'];
+  items: Pick<ProductVariantItem, 'name' | 'price'>[];
 };
 
 export const useProduct = (opt?: Options) => {
@@ -48,7 +55,7 @@ export const useProduct = (opt?: Options) => {
     [mutate]
   );
 
-  const createVaraint = useCallback((form: Partial<ProductVariant>) => {
+  const createVaraint = useCallback((form: CreateVariant) => {
     return httpClient
       .post<HttpRequest<ProductVariant>>('product/variant', form)
       .then((res) => res)
@@ -57,7 +64,7 @@ export const useProduct = (opt?: Options) => {
   }, []);
 
   const createNewProduct = useCallback(
-    (form: Partial<ProductWithVariants>) => {
+    (form: ProductManagerSchemaType) => {
       setMutating(true);
 
       const { variants, ...product } = form;
@@ -67,7 +74,14 @@ export const useProduct = (opt?: Options) => {
         .then((res) => {
           if (variants?.length) {
             variants.forEach((variant) => {
-              createVaraint({ ...variant, productId: res.data.data.id });
+              createVaraint({
+                name: variant.name,
+                productId: res.data.data.id,
+                items: variant.items.map((item) => ({
+                  name: item.name,
+                  price: item.price
+                }))
+              });
             });
           }
 

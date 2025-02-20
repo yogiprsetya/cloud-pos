@@ -15,7 +15,7 @@ export const UseForms = () => {
 
   const variant = useFieldArray({
     control: form.control,
-    name: 'variant'
+    name: 'variants'
   });
 
   const formContext = useFormContext<ProductManagerType>();
