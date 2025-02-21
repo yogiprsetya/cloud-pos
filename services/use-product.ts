@@ -7,6 +7,7 @@ import { httpClient } from '../config/http-client';
 import { useToast } from '~/hooks/useToast';
 import { errorHandler } from '~/utils/error-handler';
 import { ProductManagerSchemaType } from '~/app/dashboard/products/model';
+import { useRouter } from 'next/navigation';
 
 const LIMIT = 12;
 
@@ -28,6 +29,7 @@ export const useProduct = (opt?: Options) => {
   const [isMutating, setMutating] = useState(false);
 
   const { toast } = useToast();
+  const router = useRouter();
 
   const params = new URLSearchParams({
     keyword,
@@ -92,12 +94,14 @@ export const useProduct = (opt?: Options) => {
           });
 
           mutateAsync(res.data.data);
+          router.push(`/dashboard/products`);
+
           return res;
         })
         .catch(errorHandler)
         .finally(() => setMutating(false));
     },
-    [createVaraint, mutateAsync, toast]
+    [createVaraint, mutateAsync, router, toast]
   );
 
   const setProductImage = useCallback(

@@ -9,6 +9,8 @@ import {
   DialogTitle
 } from '~/components/ui/dialog';
 import { type Product } from '~/model/types/product';
+import { useProductAction } from '~/services/use-product-action';
+import { useProductState } from './use-state';
 
 type DialogProps = Omit<ComponentPropsWithoutRef<typeof Dialog>, 'children'>;
 
@@ -17,7 +19,18 @@ type Props = DialogProps & {
 };
 
 export const ModalDeleteProduct: FC<Props> = ({ data, ...props }) => {
+  const { deleteProductById, isMutating } = useProductAction();
+  const { closeManageVariantModal } = useProductState();
+
   if (!data) return null;
+
+  const handleDelete = async () => {
+    const res = await deleteProductById(data?.id);
+
+    if (res) {
+      closeManageVariantModal();
+    }
+  };
 
   return (
     <Dialog {...props}>
@@ -32,7 +45,10 @@ export const ModalDeleteProduct: FC<Props> = ({ data, ...props }) => {
 
         <DialogFooter>
           <Button variant="secondary">Cancel</Button>
-          <Button variant="destructive">Delete</Button>
+
+          <Button variant="destructive" disabled={isMutating} onClick={handleDelete}>
+            {isMutating ? 'Loading ...' : 'Delete'}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -1,4 +1,4 @@
-import { ProductWithVariants } from '~/model/types/product';
+import type { ProductWithVariants } from '~/model/types/product';
 import useSWR from 'swr';
 import { HttpRequest } from '~/model/types/http';
 import { useDebounce } from 'use-debounce';
