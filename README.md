@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CloudPOS
 
-## Getting Started
+CloudPOS is a full-stack point-of-sales (POS) web application built using Next.js and modern web technologies. The project is currently a work in progress, focusing on product and user management features.
 
-First, run the development server:
+## Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Frontend & Backend**: Next.js
+- **Database & ORM**: PostgreSQL, Drizzle ORM
+- **Validation**: Zod
+- **State Management**: Zustand
+- **Networking**: Axios, SWR
+- **UI & Styling**: Tailwind CSS, shadcn/ui
+- **Authentication**: NextAuth.js with Firebase Auth
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features Implemented
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. Product Management
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Create, delete, and retrieve products (single)
+- Supports product variants with labels and items
 
-## Learn More
+### 2. User Authentication & Roles
 
-To learn more about Next.js, take a look at the following resources:
+✅ User roles: Manager, Cashier, Trainee
+✅ Authentication with NextAuth.js and Firebase Auth
+✅ User account and session management
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Work in Progress
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+⏳ Implementing update product
 
-## Deploy on Vercel
+## Setup & Installation
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/yourusername/cloudpos.git
+   cd cloudpos
+   ```
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+3. Set up environment variables (e.g., Firebase, database URL, etc.).
+4. Run the development server:
+   ```sh
+   npm run dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributing
+
+Contributions are welcome! Please create a pull request or open an issue if you find any bugs or have feature suggestions.
+
+## License
+
+This project is licensed under the MIT License.
