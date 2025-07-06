@@ -1,6 +1,6 @@
 # CloudPOS
 
-CloudPOS is a full-stack point-of-sales (POS) web application built using Next.js and modern web technologies. The project is currently a work in progress, focusing on product and user management features.
+CloudPOS is a full-stack point-of-sales (POS) web (single-tenant) application built using Next.js and modern web technologies. The project is currently a work in progress, focusing on product and user management features.
 
 ## Tech Stack
 
@@ -21,7 +21,7 @@ CloudPOS is a full-stack point-of-sales (POS) web application built using Next.j
 
 ### 2. User Authentication & Roles
 
-✅ User roles: Manager, Cashier, Trainee
+✅ User roles: Manager, Staff
 ✅ Authentication with NextAuth.js and Firebase Auth
 ✅ User account and session management
 

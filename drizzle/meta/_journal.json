@@ -5,57 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1735211025145,
-      "tag": "0000_romantic_silver_centurion",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1735350615209,
-      "tag": "0001_confused_kat_farrell",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1735357921059,
-      "tag": "0002_omniscient_fallen_one",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1735365019840,
-      "tag": "0003_lame_mister_fear",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1739691661805,
-      "tag": "0004_fancy_nitro",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1739691711229,
-      "tag": "0005_lovely_princess_powerful",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1739691824266,
-      "tag": "0006_lean_chronomancer",
-      "breakpoints": true
-    },
-    {
-      "idx": 7,
-      "version": "7",
-      "when": 1739691928481,
-      "tag": "0007_fat_dormammu",
+      "when": 1751790026869,
+      "tag": "0000_silly_hellion",
       "breakpoints": true
     }
   ]

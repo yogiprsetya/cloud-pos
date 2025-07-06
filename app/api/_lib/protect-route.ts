@@ -6,7 +6,7 @@ type AuthController = (s: JWT | null) => Promise<NextResponse>;
 export const requireManagerAuth = async (request: NextRequest, controller: AuthController) => {
   const session = await getToken({
     req: request,
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET
   });
 
   if (!session) {
@@ -20,17 +20,17 @@ export const requireManagerAuth = async (request: NextRequest, controller: AuthC
   return controller(session);
 };
 
-export const requireCashierAuth = async (request: NextRequest, controller: AuthController) => {
+export const requireStaffAuth = async (request: NextRequest, controller: AuthController) => {
   const session = await getToken({
     req: request,
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET
   });
 
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  if (session.role !== 'cashier') {
+  if (session.role !== 'staff') {
     return NextResponse.json({ error: 'Unauthorization, master admin only' }, { status: 401 });
   }
 
@@ -40,7 +40,7 @@ export const requireCashierAuth = async (request: NextRequest, controller: AuthC
 export const requireUserAuth = async (request: NextRequest, controller: AuthController) => {
   const session = await getToken({
     req: request,
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET
   });
 
   if (!session) {

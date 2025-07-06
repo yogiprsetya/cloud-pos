@@ -1,7 +1,7 @@
 import { text, timestamp, pgTable, integer, primaryKey, pgEnum } from 'drizzle-orm/pg-core';
 import type { AdapterAccountType } from '@auth/core/adapters';
 
-export const rolesEnum = pgEnum('roles', ['manager', 'cashier', 'trainee']);
+export const rolesEnum = pgEnum('roles', ['manager', 'staff']);
 
 export const users = pgTable('user', {
   id: text('id')
@@ -11,7 +11,7 @@ export const users = pgTable('user', {
   email: text('email').notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image').notNull(),
-  role: rolesEnum('role').default('trainee').notNull(),
+  role: rolesEnum('role').default('staff').notNull()
 });
 
 export const accounts = pgTable(
@@ -29,13 +29,13 @@ export const accounts = pgTable(
     token_type: text('token_type'),
     scope: text('scope'),
     id_token: text('id_token'),
-    session_state: text('session_state'),
+    session_state: text('session_state')
   },
   (account) => ({
     compoundKey: primaryKey({
-      columns: [account.provider, account.providerAccountId],
-    }),
-  }),
+      columns: [account.provider, account.providerAccountId]
+    })
+  })
 );
 
 export const sessions = pgTable('session', {
@@ -43,7 +43,7 @@ export const sessions = pgTable('session', {
   userId: text('user_id')
     .notNull()
     .references(() => users.id, { onDelete: 'cascade' }),
-  expires: timestamp('expires', { mode: 'date' }).notNull(),
+  expires: timestamp('expires', { mode: 'date' }).notNull()
 });
 
 export const verificationTokens = pgTable(
@@ -51,9 +51,9 @@ export const verificationTokens = pgTable(
   {
     identifier: text('identifier').notNull(),
     token: text('token').notNull(),
-    expires: timestamp('expires', { mode: 'date' }).notNull(),
+    expires: timestamp('expires', { mode: 'date' }).notNull()
   },
   (vt) => ({
-    compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-  }),
+    compoundKey: primaryKey({ columns: [vt.identifier, vt.token] })
+  })
 );
