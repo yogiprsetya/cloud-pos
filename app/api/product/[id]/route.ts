@@ -6,16 +6,16 @@ import { handleDataNotFound, handleExpiredSession, handleInvalidRequest } from '
 import { eq, sql } from 'drizzle-orm';
 import { bodyParse } from '../../_lib/body-parse';
 import { createUpdateSchema } from 'drizzle-zod';
-import { product, productVariantLabel, productVariantItem } from '~/model/schema/product';
+import { product } from '~/model/schema/product';
 
 type Params = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 const createReqSchema = createUpdateSchema(product);
 
-export const GET = async (req: NextRequest, { params }: Params) => {
-  const { id } = await params;
+export const GET = async (req: NextRequest, context: Params) => {
+  const { id } = await context.params;
 
   return requireUserAuth(req, async (session) => {
     if (session) {
@@ -25,27 +25,11 @@ export const GET = async (req: NextRequest, { params }: Params) => {
           p.name AS name,
           p.price AS price,
           p.description AS description,
+          p.category_id AS category,
           p.created_at AS createdAt,
           p.updated_at AS updatedAt,
-          json_agg(
-            json_build_object(
-              'id', vl.id,
-              'name', vl.name,
-              'items', (
-                SELECT json_agg(
-                  json_build_object(
-                    'id', vi.id,
-                    'name', vi.name,
-                    'price', vi.price
-                  )
-                )
-                FROM product_variant_item vi
-                WHERE vi.label_id = vl.id
-              )
-            )
-          ) AS variants
         FROM product p
-        LEFT JOIN product_variant_label vl ON vl.product_id = p.id
+        LEFT JOIN product_category pc ON pc.id = p.category_id
         WHERE p.id = ${id}
         GROUP BY p.id;
       `);
@@ -98,15 +82,6 @@ export const DELETE = async (req: NextRequest, { params }: Params) => {
         .delete(product)
         .where(eq(product.id, Number(id)))
         .returning();
-
-      const variantLabel = await db
-        .delete(productVariantLabel)
-        .where(eq(productVariantLabel.productId, Number(id)))
-        .returning();
-
-      if (variantLabel.length) {
-        await db.delete(productVariantItem).where(eq(productVariantItem.labelId, variantLabel[0].id));
-      }
 
       if (!result.length) return handleDataNotFound();
 

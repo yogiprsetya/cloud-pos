@@ -7,7 +7,6 @@ import dynamic from 'next/dynamic';
 import { useProduct } from '~/services/use-product';
 import { ModalDeleteProduct } from './product-delete-modal';
 import { useProductState } from './use-state';
-import { ProductManageVariant } from './product-manage-variant';
 
 const ProductPortfolio = dynamic(() => import('./product-data-card').then((c) => c.ProductPortfolio));
 
@@ -28,12 +27,6 @@ export const ProductView = () => {
       }
     >
       <ProductPortfolio {...service} />
-
-      <ProductManageVariant
-        open={state.isManageVariantModalOpen}
-        onOpenChange={() => state.closeManageVariantModal()}
-        data={state.product}
-      />
 
       <ModalDeleteProduct
         open={state.isDeleteModalOpen}

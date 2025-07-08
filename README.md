@@ -17,7 +17,7 @@ CloudPOS is a full-stack point-of-sales (POS) web (single-tenant) application bu
 ### 1. Product Management
 
 - Create, delete, and retrieve products (single)
-- Supports product variants with labels and items
+- Supports product category
 
 ### 2. User Authentication & Roles
 

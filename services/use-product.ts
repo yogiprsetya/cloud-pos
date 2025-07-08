@@ -1,4 +1,4 @@
-import { Product, ProductVariant, ProductVariantItem, ProductVariantLabel } from '~/model/types/product';
+import { Product } from '~/model/types/product';
 import useSWR from 'swr';
 import { HttpRequest } from '~/model/types/http';
 import { useCallback, useState } from 'react';
@@ -16,12 +16,6 @@ type Options = {
   sort?: 'asc' | 'desc';
   sortBy?: keyof Pick<Product, 'createdAt' | 'updatedAt'>;
   page?: number;
-};
-
-type CreateVariant = {
-  name: ProductVariantLabel['name'];
-  productId: ProductVariantLabel['productId'];
-  items: Pick<ProductVariantItem, 'name' | 'price'>[];
 };
 
 export const useProduct = (opt?: Options) => {
@@ -57,36 +51,13 @@ export const useProduct = (opt?: Options) => {
     [mutate]
   );
 
-  const createVaraint = useCallback((form: CreateVariant) => {
-    return httpClient
-      .post<HttpRequest<ProductVariant>>('product/variant', form)
-      .then((res) => res)
-      .catch(errorHandler)
-      .finally(() => setMutating(false));
-  }, []);
-
   const createNewProduct = useCallback(
     (form: ProductManagerSchemaType) => {
       setMutating(true);
 
-      const { variants, ...product } = form;
-
       return httpClient
-        .post<HttpRequest<Product>>('product', { ...product })
+        .post<HttpRequest<Product>>('product', form)
         .then((res) => {
-          if (variants?.length) {
-            variants.forEach((variant) => {
-              createVaraint({
-                name: variant.name,
-                productId: res.data.data.id,
-                items: variant.items.map((item) => ({
-                  name: item.name,
-                  price: item.price
-                }))
-              });
-            });
-          }
-
           toast({
             title: 'Product created',
             description: 'New product added successfully',
@@ -101,7 +72,7 @@ export const useProduct = (opt?: Options) => {
         .catch(errorHandler)
         .finally(() => setMutating(false));
     },
-    [createVaraint, mutateAsync, router, toast]
+    [mutateAsync, router, toast]
   );
 
   const setProductImage = useCallback(

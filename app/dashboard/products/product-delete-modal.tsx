@@ -20,7 +20,7 @@ type Props = DialogProps & {
 
 export const ModalDeleteProduct: FC<Props> = ({ data, ...props }) => {
   const { deleteProductById, isMutating } = useProductAction();
-  const { closeManageVariantModal } = useProductState();
+  const { closeDeleteModal } = useProductState();
 
   if (!data) return null;
 
@@ -28,7 +28,7 @@ export const ModalDeleteProduct: FC<Props> = ({ data, ...props }) => {
     const res = await deleteProductById(data?.id);
 
     if (res) {
-      closeManageVariantModal();
+      closeDeleteModal();
     }
   };
 
@@ -36,7 +36,7 @@ export const ModalDeleteProduct: FC<Props> = ({ data, ...props }) => {
     <Dialog {...props}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add new product</DialogTitle>
+          <DialogTitle>Delete product</DialogTitle>
         </DialogHeader>
 
         <DialogDescription>

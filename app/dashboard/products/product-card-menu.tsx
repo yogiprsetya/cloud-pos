@@ -11,7 +11,7 @@ import { Product } from '~/model/types/product';
 import { useProductState } from './use-state';
 
 export const ProductCardMenu: FC<Product> = (product) => {
-  const { openDeleteModal, openManageVariantModal } = useProductState();
+  const { openDeleteModal } = useProductState();
 
   return (
     <DropdownMenu>
@@ -33,8 +33,6 @@ export const ProductCardMenu: FC<Product> = (product) => {
         >
           Change Image
         </DropdownMenuItem>
-
-        <DropdownMenuItem onClick={() => openManageVariantModal(product)}>Manage Variant</DropdownMenuItem>
 
         <DropdownMenuSeparator />
 

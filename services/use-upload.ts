@@ -26,8 +26,8 @@ export const useUpload = () => {
       .then((res) => {
         toast({
           title: 'File uploaded',
-          description: 'Continue to add product variant',
-          duration: 2500,
+          description: 'Upload successfull',
+          duration: 2500
         });
 
         return res.data;

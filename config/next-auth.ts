@@ -10,13 +10,13 @@ const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NEXTAUTH_SECRET } = process.env;
 
 export const nextAuthConfig: NextAuthOptions = {
   pages: {
-    signIn: '/signin',
+    signIn: '/signin'
   },
   adapter: DrizzleAdapter(db, {
     usersTable: users,
     accountsTable: accounts,
     sessionsTable: sessions,
-    verificationTokensTable: verificationTokens,
+    verificationTokensTable: verificationTokens
   }) as Adapter,
   secret: NEXTAUTH_SECRET,
   providers: [
@@ -24,20 +24,20 @@ export const nextAuthConfig: NextAuthOptions = {
       clientId: GOOGLE_CLIENT_ID ?? '',
       clientSecret: GOOGLE_CLIENT_SECRET ?? '',
       httpOptions: {
-        timeout: 40000,
+        timeout: 40000
       },
       async profile(profile) {
         return {
           ...profile,
           id: profile.sub,
-          role: profile.role ?? 'trainee',
-          image: profile.picture,
+          role: profile.role ?? 'staff',
+          image: profile.picture
         };
-      },
-    }),
+      }
+    })
   ],
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt'
   },
   callbacks: {
     async jwt({ token, user }) {
@@ -46,7 +46,7 @@ export const nextAuthConfig: NextAuthOptions = {
         token.name = user.name;
         token.email = user.email;
         token.image = user.image ?? '';
-        token.role = user.role ?? 'trainee';
+        token.role = user.role ?? 'staff';
         return token;
       }
 
@@ -62,12 +62,12 @@ export const nextAuthConfig: NextAuthOptions = {
             email: token.email,
             name: token.name,
             role: token.role,
-            image: token.image,
-          },
+            image: token.image
+          }
         };
       }
 
       return { ...session, user: session.user };
-    },
-  },
+    }
+  }
 };
