@@ -9,6 +9,7 @@ import {
 } from '~/components/ui/dropdown-menu';
 import { Product } from '~/model/types/product';
 import { useProductState } from './use-state';
+import Link from 'next/link';
 
 export const ProductCardMenu: FC<Product> = (product) => {
   const { openDeleteModal } = useProductState();
@@ -21,7 +22,7 @@ export const ProductCardMenu: FC<Product> = (product) => {
 
       <DropdownMenuContent>
         <DropdownMenuItem asChild>
-          <a href={`/dashboard/products/${product.id}`}>Edit</a>
+          <Link href={`/dashboard/products/${product.id}`}>Edit</Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem

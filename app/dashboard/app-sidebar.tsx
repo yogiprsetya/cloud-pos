@@ -11,27 +11,28 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from '~/components/ui/sidebar';
-import { Home, Package2, GalleryVerticalEnd, ShoppingCart, Shirt, Group } from 'lucide-react';
+import { Home, GalleryVerticalEnd, ShoppingCart, Shirt, Group } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
 import { If } from '~/components/ui/if';
+import Link from 'next/link';
 
 const productItems = [
   {
-    title: 'Product Category',
+    title: 'Category',
     url: '/dashboard/product-category',
     icon: Group
   },
   {
-    title: 'Product Items',
+    title: 'Items',
     url: '/dashboard/products',
     icon: Shirt
-  },
-  {
-    title: 'Stock',
-    url: '/dashboard/stocks',
-    icon: Package2
   }
+  // {
+  //   title: 'Stock',
+  //   url: '/dashboard/stocks',
+  //   icon: Package2
+  // }
 ];
 
 const posItems = [
@@ -78,35 +79,35 @@ export const AppSidebar = () => {
         <Groups>
           <SidebarMenuItem>
             <SidebarMenuButton asChild isActive={pathname === '/dashboard'}>
-              <a href="/dashboard">
+              <Link href="/dashboard">
                 <Home />
                 <span>Home</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </Groups>
 
-        <Groups title="Sales">
+        <Groups title="Product">
           {posItems.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild isActive={pathname === item.url}>
-                <a href={item.url}>
+                <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
         </Groups>
 
-        <Groups title="Warehouses">
+        <Groups title="Library">
           {productItems.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild isActive={pathname === item.url}>
-                <a href={item.url}>
+                <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
-                </a>
+                </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}

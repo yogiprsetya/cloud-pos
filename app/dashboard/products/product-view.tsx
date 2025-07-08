@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import { useProduct } from '~/services/use-product';
 import { ModalDeleteProduct } from './product-delete-modal';
 import { useProductState } from './use-state';
+import Link from 'next/link';
 
 const ProductPortfolio = dynamic(() => import('./product-data-card').then((c) => c.ProductPortfolio));
 
@@ -20,9 +21,9 @@ export const ProductView = () => {
       description="Product collection manager."
       actionElement={
         <Button asChild>
-          <a href="/dashboard/products/create">
+          <Link href="/dashboard/products/create">
             <Plus /> Product
-          </a>
+          </Link>
         </Button>
       }
     >
