@@ -97,6 +97,29 @@ export const useProduct = (opt?: Options) => {
     [mutateAsync, toast]
   );
 
+  const deleteProductById = useCallback(
+    (id: number) => {
+      setMutating(true);
+
+      return httpClient
+        .delete<HttpRequest<Product>>(`product/${id}`)
+        .then((res) => {
+          mutate();
+
+          toast({
+            title: 'Product deleted',
+            description: 'A product deleted successfully',
+            duration: 2500
+          });
+
+          return res;
+        })
+        .catch(errorHandler)
+        .finally(() => setMutating(false));
+    },
+    [mutate, toast]
+  );
+
   return {
     data,
     isLoading,
@@ -104,6 +127,7 @@ export const useProduct = (opt?: Options) => {
     isMutating,
     createNewProduct,
     setProductImage,
+    deleteProductById,
     setSearchKeyword: useDebouncedCallback((q: string) => setSearchKeyword(q), 500)
   };
 };

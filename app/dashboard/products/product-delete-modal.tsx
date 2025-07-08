@@ -9,7 +9,7 @@ import {
   DialogTitle
 } from '~/components/ui/dialog';
 import { type Product } from '~/model/types/product';
-import { useProductAction } from '~/services/use-product-action';
+import { useProduct } from '~/services/use-product';
 import { useProductState } from './use-state';
 
 type DialogProps = Omit<ComponentPropsWithoutRef<typeof Dialog>, 'children'>;
@@ -19,7 +19,7 @@ type Props = DialogProps & {
 };
 
 export const ModalDeleteProduct: FC<Props> = ({ data, ...props }) => {
-  const { deleteProductById, isMutating } = useProductAction();
+  const { deleteProductById, isMutating } = useProduct();
   const { closeDeleteModal } = useProductState();
 
   if (!data) return null;
