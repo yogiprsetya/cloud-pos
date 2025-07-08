@@ -1,9 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { handleSuccessResponse } from 'api-lib/handle-success-res';
+import { handleSuccessResponse } from '~/app/api/handle-success-res';
 import { File } from 'node:buffer';
-import { handleInvalidRequest } from 'api-lib/handle-error-res';
+import { handleInvalidRequest } from '~/app/api/handle-error-res';
 
 const supabaseUrl = process.env.SUPABASE_URL ?? '';
 const supabaseKey = process.env.SUPABASE_ANON_KEY ?? '';

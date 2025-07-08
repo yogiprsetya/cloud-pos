@@ -15,18 +15,18 @@ export const handleInvalidRequest = (error: ZodError<unknown> | string) => {
     {
       success: false,
       message: 'Invalid request',
-      errors: errorResponse,
+      errors: errorResponse
     },
     {
-      status: 400,
-    },
+      status: 400
+    }
   );
 };
 
 export const handleDataNotFound = () => {
   return NextResponse.json({
     success: false,
-    message: 'Data (related) not found, please make sure passed <path> is correct!',
+    message: 'Data (related) not found, please make sure passed <path> is correct!'
   });
 };
 
@@ -34,9 +34,9 @@ export const handleExpiredSession = () => {
   return NextResponse.json(
     {
       success: false,
-      message: 'For any security reason, session has expired, please re-signin!',
+      message: 'For any security reason, session has expired, please re-signin!'
     },
-    { status: 440 },
+    { status: 440 }
   );
 };
 
@@ -44,9 +44,9 @@ export const handleNotFound = () => {
   return NextResponse.json(
     {
       success: false,
-      message: 'Invalid request',
+      message: 'Invalid request'
     },
-    { status: 404 },
+    { status: 404 }
   );
 };
 
@@ -54,8 +54,8 @@ export const handleCatch = (message?: string) => {
   return NextResponse.json(
     {
       success: false,
-      message: message ?? 'Invalid request',
+      message: message ?? 'Invalid request'
     },
-    { status: 500 },
+    { status: 500 }
   );
 };

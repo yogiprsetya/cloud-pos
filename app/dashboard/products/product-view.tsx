@@ -1,6 +1,6 @@
 'use client';
 
-import { LayoutView } from '../_layout-view';
+import { LayoutView } from '../layout-view';
 import { Button } from '~/components/ui/button';
 import { Plus } from 'lucide-react';
 import dynamic from 'next/dynamic';

@@ -9,7 +9,7 @@ const ThemeToggle = dynamic(() => import('~/components/pattern/ThemeToggle').the
 });
 
 export const Header = () => (
-  <header className="bg-card/90 backdrop-blur-lg justify-between sticky top-0 z-30 flex h-16 px-4 w-full transition-shadow duration-100 [transform:translate3d(0,0,0)] border-b items-center">
+  <header className="bg-background justify-between sticky top-0 z-30 flex h-16 px-4 w-full transition-shadow duration-100 [transform:translate3d(0,0,0)] border-b items-center">
     <SidebarTrigger />
 
     <div className="flex gap-2 items-center">

@@ -1,10 +1,10 @@
-import { requireUserAuth } from 'api-lib/protect-route';
+import { requireUserAuth } from '~/app/api/protect-route';
 import { db } from '~/config/db';
 import { type NextRequest } from 'next/server';
-import { handleSuccessResponse } from 'api-lib/handle-success-res';
-import { handleDataNotFound, handleExpiredSession, handleInvalidRequest } from 'api-lib/handle-error-res';
+import { handleSuccessResponse } from '~/app/api/handle-success-res';
+import { handleDataNotFound, handleExpiredSession, handleInvalidRequest } from '~/app/api/handle-error-res';
 import { eq, sql } from 'drizzle-orm';
-import { bodyParse } from '../../_lib/body-parse';
+import { bodyParse } from '../../body-parse';
 import { createUpdateSchema } from 'drizzle-zod';
 import { product } from '~/model/schema/product';
 

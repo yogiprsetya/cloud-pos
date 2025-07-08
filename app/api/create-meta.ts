@@ -23,6 +23,6 @@ export const createMeta = async (param: CreateMetaParams) => {
     totalCount,
     totalPages,
     currentPage,
-    limit: param.limit,
+    limit: param.limit
   };
 };

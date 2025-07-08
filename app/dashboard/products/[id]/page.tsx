@@ -1,4 +1,4 @@
-import { LayoutView } from '../../_layout-view';
+import { LayoutView } from '../../layout-view';
 import { ManageProduct } from '../product-manager';
 
 const EditProductPage = async ({ params }: { params: Promise<{ id: string }> }) => {

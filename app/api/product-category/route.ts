@@ -2,17 +2,15 @@ import { requireUserAuth } from '~/app/api/protect-route';
 import { db } from '~/config/db';
 import { handleSuccessResponse } from '~/app/api/handle-success-res';
 import { handleExpiredSession, handleInvalidRequest } from '~/app/api/handle-error-res';
-import { and, asc, desc, ilike } from 'drizzle-orm';
-import { product } from '~/model/schema/product';
+import { productCategory } from '~/model/schema/product';
 import { type NextRequest } from 'next/server';
 import { createMeta } from '~/app/api/create-meta';
-import { Product } from '~/model/types/product';
-import { bodyParse } from '~/app/api/body-parse';
 import { createInsertSchema } from 'drizzle-zod';
+import { bodyParse } from '~/app/api/body-parse';
 
 const LIMIT = 10;
 
-const createReqSchema = createInsertSchema(product);
+const createReqSchema = createInsertSchema(productCategory);
 
 export const GET = async (req: NextRequest) => {
   const { searchParams } = req.nextUrl;
@@ -20,36 +18,21 @@ export const GET = async (req: NextRequest) => {
   const params = {
     sort: searchParams.get('sort'),
     limit: searchParams.get('limit'),
-    keyword: searchParams.get('keyword'),
-    page: searchParams.get('page'),
-    sortBy: searchParams.get('sortBy') as keyof Pick<Product, 'createdAt' | 'updatedAt'>
+    page: searchParams.get('page')
   };
 
   const limitRow = Number(params?.limit || LIMIT);
-  const searchCodition = params.keyword ? ilike(product.name, `%${params.keyword}%`) : undefined;
   const offset = params.page ? (Number(params.page) - 1) * limitRow : 0;
-  const queryFilter = and(searchCodition);
-  const sortedBy = params.sortBy || 'createdAt';
-  const sorted = params.sort || 'asc';
-
-  const sortedAsc = sortedBy === 'createdAt' ? asc(product.createdAt) : asc(product.updatedAt);
-  const sortedDesc = sortedBy === 'updatedAt' ? desc(product.updatedAt) : desc(product.createdAt);
 
   return requireUserAuth(req, async (session) => {
     if (session) {
-      const result = await db
-        .select()
-        .from(product)
-        .where(queryFilter)
-        .limit(limitRow)
-        .offset(offset)
-        .orderBy(sorted === 'asc' ? sortedAsc : sortedDesc);
+      const result = await db.select().from(productCategory).limit(limitRow).offset(offset);
 
       const meta = await createMeta({
-        table: product,
+        table: productCategory,
         limit: limitRow,
         page: Number(params.page || 1),
-        query: queryFilter
+        query: undefined
       });
 
       return handleSuccessResponse(result, meta);
@@ -70,12 +53,9 @@ export const POST = async (req: NextRequest) => {
   return requireUserAuth(req, async (session) => {
     if (session) {
       const result = await db
-        .insert(product)
+        .insert(productCategory)
         .values({
-          name: data.name,
-          price: data.price,
-          description: data.description,
-          image: data.image
+          name: data.name
         })
         .returning();
 

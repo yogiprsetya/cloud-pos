@@ -11,14 +11,19 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from '~/components/ui/sidebar';
-import { Home, Package2, GalleryVerticalEnd, ShoppingCart, Shirt } from 'lucide-react';
+import { Home, Package2, GalleryVerticalEnd, ShoppingCart, Shirt, Group } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
 import { If } from '~/components/ui/if';
 
 const productItems = [
   {
-    title: 'Product',
+    title: 'Product Category',
+    url: '/dashboard/product-category',
+    icon: Group
+  },
+  {
+    title: 'Product Items',
     url: '/dashboard/products',
     icon: Shirt
   },
@@ -56,8 +61,8 @@ const Header = () => (
     </div>
 
     <div className="leading-none">
-      <h1 className="font-semibold">UMKM Toolkit</h1>
-      <p className="text-sm">Small business digital toolkit</p>
+      <h1 className="font-semibold">Cloud POS</h1>
+      <p className="text-xs">Cloud-based store management</p>
     </div>
   </SidebarHeader>
 );
