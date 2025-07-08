@@ -46,10 +46,7 @@ export const ProductPortfolio: FC<Props> = ({ isLoading, setSearchKeyword, data 
         <Loading className="size-6 mx-auto" />
       ) : (
         <div className="grid grid-cols-4 gap-4">
-          <If
-            condition={table.getRowModel().rows?.length}
-            fallback="Data product is empty, please create."
-          >
+          <If condition={table.getRowModel().rows?.length} fallback="Data product is empty, please create.">
             {table.getRowModel().rows.map((row) => {
               const cellMenu = row.getVisibleCells().find((cell) => cell.column.id === 'menu');
               const menuEl = cellMenu
@@ -57,7 +54,7 @@ export const ProductPortfolio: FC<Props> = ({ isLoading, setSearchKeyword, data 
                 : null;
 
               return (
-                <Card key={row.original.id} className="overflow-hidden">
+                <Card key={row.original.id} className="overflow-hidden pt-0">
                   <div className="h-40 w-full bg-secondary flex items-center justify-center">
                     {row.original.image ? (
                       <img
@@ -70,7 +67,7 @@ export const ProductPortfolio: FC<Props> = ({ isLoading, setSearchKeyword, data 
                     )}
                   </div>
 
-                  <div className="p-4 h-full">
+                  <div className="px-4 h-full">
                     <div className="flex justify-between items-center">
                       <h3 className="font-semibold">{row.original.name}</h3>
                       {menuEl}

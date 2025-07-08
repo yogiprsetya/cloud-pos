@@ -20,7 +20,7 @@ export default function RootLayout({
       <Sheet>
         <AppSidebar />
 
-        <SidebarInset className="bg-background">
+        <SidebarInset className="bg-primary-foreground">
           <Header />
           <div className="px-6 md:mt-10 mt-6 pb-10">{children}</div>
         </SidebarInset>

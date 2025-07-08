@@ -20,11 +20,17 @@ export const ProductView = () => {
       title="Product"
       description="Product collection manager."
       actionElement={
-        <Button asChild>
-          <Link href="/dashboard/products/create">
-            <Plus /> Product
-          </Link>
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" asChild>
+            <Link href="/dashboard/products/create">Category</Link>
+          </Button>
+
+          <Button asChild>
+            <Link href="/dashboard/products/create">
+              <Plus /> Product
+            </Link>
+          </Button>
+        </div>
       }
     >
       <ProductPortfolio {...service} />
