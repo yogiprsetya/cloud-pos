@@ -20,7 +20,7 @@ export const useProductState = create<State>()(
     openDeleteModal: (product) => set(() => ({ isDeleteModalOpen: true, product })),
     closeDeleteModal: () => set(() => ({ isDeleteModalOpen: false, product: undefined })),
 
-    isCategoryModalOpen: true,
+    isCategoryModalOpen: false,
     openCategoryModal: () => set(() => ({ isCategoryModalOpen: true })),
     closeCategoryModal: () => set(() => ({ isCategoryModalOpen: false }))
   }))

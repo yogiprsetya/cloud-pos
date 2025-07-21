@@ -11,35 +11,40 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from '~/components/ui/sidebar';
-import { Home, GalleryVerticalEnd, ShoppingCart, Shirt, Group } from 'lucide-react';
+import { Home, GalleryVerticalEnd, ShoppingCart, Shirt } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
 import { If } from '~/components/ui/if';
 import Link from 'next/link';
 
-const productItems = [
-  {
-    title: 'Category',
-    url: '/dashboard/product-category',
-    icon: Group
-  },
-  {
-    title: 'Items',
-    url: '/dashboard/products',
-    icon: Shirt
-  }
-  // {
-  //   title: 'Stock',
-  //   url: '/dashboard/stocks',
-  //   icon: Package2
-  // }
-];
+// const productItems = [
+// {
+//   title: 'Category',
+//   url: '/dashboard/product-category',
+//   icon: Group
+// },
+// {
+//   title: 'Items',
+//   url: '/dashboard/products',
+//   icon: Shirt
+// }
+// {
+//   title: 'Stock',
+//   url: '/dashboard/stocks',
+//   icon: Package2
+// }
+// ];
 
 const posItems = [
   {
     title: 'Point of Sale',
     url: '/dashboard/point-of-sale',
     icon: ShoppingCart
+  },
+  {
+    title: 'Product',
+    url: '/dashboard/products',
+    icon: Shirt
   }
 ];
 
@@ -87,7 +92,7 @@ export const AppSidebar = () => {
           </SidebarMenuItem>
         </Groups>
 
-        <Groups title="Product">
+        <Groups title="Sales">
           {posItems.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild isActive={pathname === item.url}>
@@ -100,7 +105,7 @@ export const AppSidebar = () => {
           ))}
         </Groups>
 
-        <Groups title="Library">
+        {/* <Groups title="Library">
           {productItems.map((item) => (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild isActive={pathname === item.url}>
@@ -111,7 +116,7 @@ export const AppSidebar = () => {
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
-        </Groups>
+        </Groups> */}
       </SidebarContent>
     </Sidebar>
   );

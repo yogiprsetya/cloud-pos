@@ -8,7 +8,7 @@ import { createMeta } from '~/app/api/create-meta';
 import { createInsertSchema } from 'drizzle-zod';
 import { bodyParse } from '~/app/api/body-parse';
 
-const LIMIT = 10;
+const LIMIT = 6;
 
 const createReqSchema = createInsertSchema(productCategory);
 
@@ -16,22 +16,19 @@ export const GET = async (req: NextRequest) => {
   const { searchParams } = req.nextUrl;
 
   const params = {
-    sort: searchParams.get('sort'),
-    limit: searchParams.get('limit'),
-    page: searchParams.get('page')
+    limit: searchParams.get('limit')
   };
 
   const limitRow = Number(params?.limit || LIMIT);
-  const offset = params.page ? (Number(params.page) - 1) * limitRow : 0;
 
   return requireUserAuth(req, async (session) => {
     if (session) {
-      const result = await db.select().from(productCategory).limit(limitRow).offset(offset);
+      const result = await db.select().from(productCategory).limit(limitRow);
 
       const meta = await createMeta({
         table: productCategory,
         limit: limitRow,
-        page: Number(params.page || 1),
+        page: 1,
         query: undefined
       });
 

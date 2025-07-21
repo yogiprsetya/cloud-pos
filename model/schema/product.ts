@@ -14,6 +14,5 @@ export const product = pgTable('product', {
 export const productCategory = pgTable('product_category', {
   id: serial('id').primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow()
+  createdAt: timestamp('created_at').defaultNow()
 });
