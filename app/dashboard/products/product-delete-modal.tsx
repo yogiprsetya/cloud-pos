@@ -1,4 +1,4 @@
-import { ComponentPropsWithoutRef, FC } from 'react';
+import { FC } from 'react';
 import { Button } from '~/components/ui/button';
 import {
   Dialog,
@@ -8,44 +8,35 @@ import {
   DialogHeader,
   DialogTitle
 } from '~/components/ui/dialog';
-import { type Product } from '~/model/types/product';
 import { useProduct } from '~/services/use-product';
 import { useProductState } from './use-state';
 
-type DialogProps = Omit<ComponentPropsWithoutRef<typeof Dialog>, 'children'>;
-
-type Props = DialogProps & {
-  data?: Product;
-};
-
-export const ModalDeleteProduct: FC<Props> = ({ data, ...props }) => {
+export const ModalDeleteProduct: FC = () => {
   const { deleteProductById, isMutating } = useProduct();
-  const { closeDeleteModal } = useProductState();
+  const state = useProductState();
 
-  if (!data) return null;
+  if (!state.product) return null;
 
   const handleDelete = async () => {
-    const res = await deleteProductById(data?.id);
+    const res = await deleteProductById(state.product?.id ?? 0);
 
     if (res) {
-      closeDeleteModal();
+      state.closeDeleteModal();
     }
   };
 
   return (
-    <Dialog {...props}>
+    <Dialog open={state.isDeleteModalOpen} onOpenChange={() => state.closeDeleteModal()}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Delete product</DialogTitle>
         </DialogHeader>
 
         <DialogDescription>
-          Are you sure you want to delete <b>{data?.name}</b>?, this action cannot be undone.
+          Are you sure you want to delete <b>{state.product?.name}</b>?, this action cannot be undone.
         </DialogDescription>
 
         <DialogFooter>
-          <Button variant="secondary">Cancel</Button>
-
           <Button variant="destructive" disabled={isMutating} onClick={handleDelete}>
             {isMutating ? 'Loading ...' : 'Delete'}
           </Button>

@@ -8,6 +8,7 @@ export default {
       sans: 'var(--font-geist-sans)'
     },
     colors: {
+      black: 'hsl(222 84% 5%)',
       background: 'hsl(var(--background))',
       foreground: 'hsl(var(--foreground))',
       card: {

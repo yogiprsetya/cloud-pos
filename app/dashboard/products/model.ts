@@ -1,4 +1,4 @@
-import { Product } from '~/model/types/product';
+import { Product, ProductCategory } from '~/model/types/product';
 import { z } from 'zod';
 
 export type ProductManagerSchemaType = Omit<Product, 'id' | 'createdAt' | 'updatedAt'>;
@@ -12,3 +12,11 @@ export const ProductManagerSchema: z.ZodType<ProductManagerSchemaType> = z.objec
 });
 
 export type ProductManagerType = z.infer<typeof ProductManagerSchema>;
+
+export type ProductCatManagerSchemaType = Omit<ProductCategory, 'id' | 'createdAt' | 'updatedAt'>;
+
+export const ProductCatManagerSchema: z.ZodType<ProductCatManagerSchemaType> = z.object({
+  name: z.string().min(2).max(100)
+});
+
+export type ProductCatManagerType = z.infer<typeof ProductCatManagerSchema>;

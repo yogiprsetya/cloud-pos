@@ -5,11 +5,20 @@ import { Button } from '~/components/ui/button';
 import { Plus } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { useProduct } from '~/services/use-product';
-import { ModalDeleteProduct } from './product-delete-modal';
 import { useProductState } from './use-state';
 import Link from 'next/link';
 
-const ProductPortfolio = dynamic(() => import('./product-data-card').then((c) => c.ProductPortfolio));
+const ProductPortfolio = dynamic(() => import('./product-data-card').then((c) => c.ProductPortfolio), {
+  ssr: false
+});
+
+const ModalDeleteProduct = dynamic(() => import('./product-delete-modal').then((c) => c.ModalDeleteProduct), {
+  ssr: false
+});
+
+const CategoryAddModal = dynamic(() => import('./category-add-modal').then((c) => c.CategoryAddModal), {
+  ssr: false
+});
 
 export const ProductView = () => {
   const service = useProduct();
@@ -21,8 +30,8 @@ export const ProductView = () => {
       description="Product collection manager."
       actionElement={
         <div className="flex gap-2">
-          <Button variant="outline" asChild>
-            <Link href="/dashboard/products/create">Category</Link>
+          <Button variant="outline" onClick={() => state.openCategoryModal()}>
+            Category
           </Button>
 
           <Button asChild>
@@ -34,12 +43,8 @@ export const ProductView = () => {
       }
     >
       <ProductPortfolio {...service} />
-
-      <ModalDeleteProduct
-        open={state.isDeleteModalOpen}
-        onOpenChange={() => state.closeDeleteModal()}
-        data={state.product}
-      />
+      <ModalDeleteProduct />
+      <CategoryAddModal />
     </LayoutView>
   );
 };

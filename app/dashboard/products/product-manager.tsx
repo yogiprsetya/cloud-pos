@@ -7,8 +7,9 @@ import { FC, useEffect } from 'react';
 import { UploadImage } from '~/components/pattern/UploadImage';
 import { Textarea } from '~/components/ui/textarea';
 import { useProduct } from '~/services/use-product';
-import { ProductManagerType } from './model';
-import { UseForms } from './use-forms';
+import { useForm } from 'react-hook-form';
+import { ProductManagerSchema, ProductManagerType } from './model';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useProductId } from '~/services/use-product-id';
 
 type Props = {
@@ -17,7 +18,16 @@ type Props = {
 
 export const ManageProduct: FC<Props> = ({ id }) => {
   const { createNewProduct } = useProduct();
-  const { form } = UseForms();
+
+  const form = useForm<ProductManagerType>({
+    resolver: zodResolver(ProductManagerSchema),
+    defaultValues: {
+      name: '',
+      price: 0,
+      description: '',
+      image: ''
+    }
+  });
 
   const { data, isLoading } = useProductId({ id });
 
