@@ -1,17 +1,8 @@
 import type { Metadata } from 'next';
-import { Geist } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from 'next-themes';
-import { cn } from '~/src/utils/css';
 import { NextAuthProvider } from '~/components/layout/NextAuthProvider';
 import { SWRProvider } from '~/components/layout/SWRProvider';
-
-const geist = Geist({
-  variable: '--font-geist-sans',
-  display: 'swap',
-  weight: ['400', '900'],
-  subsets: ['latin']
-});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -25,7 +16,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(geist.variable, 'antialiased')}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&display=swap&subset=latin"
+          rel="stylesheet"
+        />
+      </head>
+
+      <body>
         <ThemeProvider attribute="class" defaultTheme="light">
           <SWRProvider>
             <NextAuthProvider>{children}</NextAuthProvider>

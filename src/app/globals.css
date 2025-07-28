@@ -4,6 +4,9 @@
 
 @layer base {
   :root {
+    --font-geist-sans: 'Geist', sans-serif;
+  }
+  :root {
     --background: 0 0% 100%;
 
     --foreground: 222 84% 5%;
@@ -128,6 +131,6 @@
   }
 
   body {
-    @apply bg-background text-foreground font-[family-name:var(--font-geist-sans)];
+    @apply bg-background text-foreground antialiased font-sans;
   }
 }

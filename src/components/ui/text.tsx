@@ -13,7 +13,7 @@ const textVariant = cva('', {
       'heading-4': 'text-xl font-semibold tracking-tight',
       base: 'leading-7',
       large: 'text-lg font-semibold',
-      small: 'text-sm font-medium leading-none',
+      small: 'text-sm font-semibold leading-none',
       muted: 'text-sm text-muted-foreground'
     }
   },

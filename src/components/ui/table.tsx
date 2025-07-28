@@ -28,7 +28,7 @@ const TableFooter = forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTable
   ({ className, ...props }, ref) => (
     <tfoot
       ref={ref}
-      className={cn('border-t bg-muted/50 font-medium [&>tr]:last:border-b-0', className)}
+      className={cn('border-t bg-muted/50 font-semibold [&>tr]:last:border-b-0', className)}
       {...props}
     />
   )
@@ -53,7 +53,7 @@ const TableHead = forwardRef<
   <th
     ref={ref}
     className={cn(
-      'px-4 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0',
+      'px-4 text-left align-middle font-semibold text-muted-foreground [&:has([role=checkbox])]:pr-0',
       size === 'sm' ? 'h-10' : 'h-12',
       className
     )}

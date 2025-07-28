@@ -6,7 +6,7 @@ import { cn } from '~/src/utils/css';
 const buttonVariants = cva(
   cn(
     'inline-flex items-center justify-center gap-2',
-    'text-sm font-medium whitespace-nowrap',
+    'text-sm font-semibold whitespace-nowrap',
     'rounded-md transition-colors disabled:pointer-events-none disabled:opacity-50',
     '[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0'
     // 'ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
