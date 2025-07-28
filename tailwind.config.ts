@@ -4,7 +4,6 @@ import type { Config } from 'tailwindcss';
 export default {
   theme: {
     fontFamily: {
-      mono: 'var(--font-geist-mono)',
       sans: 'var(--font-geist-sans)'
     },
     colors: {
@@ -72,6 +71,6 @@ export default {
     }
   },
   darkMode: ['selector'],
-  content: ['./components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}'],
+  content: ['./src/**/*.{ts,tsx}'],
   plugins: [require('tailwindcss-animate')]
 } satisfies Config;

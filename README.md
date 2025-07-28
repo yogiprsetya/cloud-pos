@@ -46,10 +46,7 @@ CloudPOS is a full-stack point-of-sales (POS) web (single-tenant) application bu
    npm run dev
    ```
 
-## Contributing
+## Literature
 
-Contributions are welcome! Please create a pull request or open an issue if you find any bugs or have feature suggestions.
-
-## License
-
-This project is licensed under the MIT License.
+- https://bespoyasov.me/blog/clean-architecture-on-frontend
+- https://arno.surfacew.com/posts/nextjs-architecture

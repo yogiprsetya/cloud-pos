@@ -1,1 +1,0 @@
-ALTER TABLE "product_category" DROP COLUMN "updated_at";

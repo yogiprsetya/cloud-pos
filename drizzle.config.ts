@@ -1,11 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { defineConfig } from 'drizzle-kit';
-import '~/config/env';
+import '~/src/config/env';
 
 export default defineConfig({
   dialect: 'postgresql',
-  schema: './model/schema/*',
-  out: './drizzle',
+  schema: './db/schema/*',
+  out: './db/drizzle',
   dbCredentials: {
     url: process.env.POSTGRES_URL || ''
   },

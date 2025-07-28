@@ -1,0 +1,1 @@
+ALTER TABLE "transactions" ALTER COLUMN "created_by" SET DATA TYPE text;

@@ -1,5 +1,5 @@
-import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
+import { getAuthSession } from './src/config/auth';
 
 export default async function middleware(req: NextRequest) {
   // Get the pathname of the request (e.g. /, /protected)
@@ -10,10 +10,7 @@ export default async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const session = await getToken({
-    req,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
+  const session = await getAuthSession();
 
   const isProtected = path.includes('/dashboard');
 
