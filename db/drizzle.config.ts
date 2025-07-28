@@ -1,6 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { defineConfig } from 'drizzle-kit';
-import '~/src/config/env';
+import { loadEnvConfig } from '@next/env';
+
+loadEnvConfig(process.cwd());
 
 export default defineConfig({
   dialect: 'postgresql',

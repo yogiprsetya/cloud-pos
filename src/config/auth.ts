@@ -1,10 +1,9 @@
-import { getServerSession, NextAuthOptions } from 'next-auth';
+import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import type { Adapter } from 'next-auth/adapters';
 import { db } from '~/src/config/db-client';
 import { accounts, sessions, users, verificationTokens } from '~/db/schema/users';
-import { eq } from 'drizzle-orm';
 
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NEXTAUTH_SECRET } = process.env;
 
@@ -41,23 +40,16 @@ export const nextAuthConfig: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-      const dbUser = await db
-        .select()
-        .from(users)
-        .where(eq(users.email, token.email ?? ''));
-
-      if (!dbUser) {
-        token.id = user!.id;
+      if (user) {
+        token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.image = user.image ?? '';
+        token.role = user.role ?? 'staff';
         return token;
       }
 
-      return {
-        id: dbUser[0].id,
-        name: dbUser[0].name,
-        email: dbUser[0].email,
-        picture: dbUser[0].image,
-        role: dbUser[0].role
-      };
+      return token;
     },
 
     async session({ session, token }) {
@@ -73,5 +65,3 @@ export const nextAuthConfig: NextAuthOptions = {
     }
   }
 };
-
-export const getAuthSession = () => getServerSession(nextAuthConfig);

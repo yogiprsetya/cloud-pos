@@ -1,21 +1,25 @@
-/* eslint-disable @typescript-eslint/no-empty-object-type */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { DefaultSession } from 'next-auth';
-import { JWT as TokenCore } from '~/core/entities/Token';
-import { User as UserCore } from '~/core/entities/User';
+import type { User } from 'next-auth';
+import type { JWT } from 'next-auth/jwt';
 
-declare module 'next-auth' {
-  /**
-   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
-   */
-  interface Session extends Pick<DefaultSession, 'expires'> {
-    user: UserCore;
-  }
-
-  interface User extends UserCore {}
-}
+type UserId = string;
 
 declare module 'next-auth/jwt' {
-  /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
-  interface JWT extends TokenCore {}
+  interface JWT {
+    id: UserId;
+    role: 'staff' | 'manager';
+  }
+}
+
+declare module 'next-auth' {
+  interface Session {
+    user: User & {
+      id: UserId;
+      role: 'staff' | 'manager';
+    };
+  }
+
+  interface User extends User {
+    role: 'staff' | 'manager';
+  }
 }

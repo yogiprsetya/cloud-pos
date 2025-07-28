@@ -38,8 +38,6 @@ export const ManageProduct: FC<Props> = ({ id }) => {
 
   useEffect(() => {
     if (data) {
-      console.log('data', data.data);
-
       form.reset(data.data);
     }
   }, [data, form]);

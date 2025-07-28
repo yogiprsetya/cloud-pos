@@ -1,5 +1,10 @@
 import { LayoutView } from '../../layout-view';
-import { ManageProduct } from '../product-manager';
+
+import dynamic from 'next/dynamic';
+
+const ManageProduct = dynamic(() => import('../product-manager').then((c) => c.ManageProduct), {
+  ssr: false
+});
 
 const CreateProductPage = () => {
   return (
