@@ -7,7 +7,7 @@ import { useImageResizer } from '~/src/hooks/useImageResizer';
 import { cn } from '~/src/utils/css';
 import { If } from '../ui/if';
 import { Button } from '../ui/button';
-import { CloudUpload } from 'lucide-react';
+import { CloudUpload, MessageCircleWarning } from 'lucide-react';
 import { useUpload } from '~/services/use-upload';
 
 interface Props extends Omit<ComponentProps<'input'>, 'onChange'> {
@@ -17,14 +17,13 @@ interface Props extends Omit<ComponentProps<'input'>, 'onChange'> {
   onUploaded?: (file: string) => void;
 }
 
-const WIDTH = 400;
-const HEIGHT = 300;
+const WIDTH = 380;
 
 export const UploadImage = forwardRef<HTMLInputElement, Props>((props, ref) => {
   const [preview, setPreview] = useState<File | null>(null);
 
   const elementId = useId();
-  const { resizeFile } = useImageResizer({ width: WIDTH, height: HEIGHT });
+  const { resizeFile } = useImageResizer({ maxWidth: WIDTH });
   const { upload, isUploading } = useUpload();
 
   const handleUpload = useCallback(
@@ -57,24 +56,24 @@ export const UploadImage = forwardRef<HTMLInputElement, Props>((props, ref) => {
 
       <If condition={preview || props.existingImageUrl}>
         {(src) => (
-          <div className="relative">
+          <div className="flex gap-4 items-center">
             <img
               src={typeof src === 'string' ? src : URL.createObjectURL(src)}
               alt="product image preview"
-              className="w-full rounded object-cover"
-              style={{ maxHeight: HEIGHT }}
+              className="size-40 rounded-md object-cover"
             />
 
             <If condition={preview}>
-              <Button
-                onClick={onUpload}
-                className="absolute top-2 right-2"
-                size="sm"
-                variant="secondary"
-                disabled={isUploading}
-              >
-                <CloudUpload /> {isUploading ? 'Uploading ...' : 'Upload'}
-              </Button>
+              <div className="space-y-1">
+                <Button onClick={onUpload} className="" size="sm" variant="outline" disabled={isUploading}>
+                  <CloudUpload /> {isUploading ? 'Uploading ...' : 'Upload'}
+                </Button>
+
+                <div className="text-sm flex items-center gap-1">
+                  <MessageCircleWarning className="size-4" />
+                  <p>Upload image before create product.</p>
+                </div>
+              </div>
             </If>
           </div>
         )}
