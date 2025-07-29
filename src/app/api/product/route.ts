@@ -36,13 +36,21 @@ export const GET = async (req: NextRequest) => {
 
   return requireUserAuth(req, async (session) => {
     if (session) {
-      const result = await db
-        .select()
-        .from(product)
-        .where(queryFilter)
-        .limit(limitRow)
-        .offset(offset)
-        .orderBy(sorted === 'asc' ? sortedAsc : sortedDesc);
+      const result = await db.query.product.findMany({
+        columns: {
+          categoryId: false
+        },
+        with: {
+          category: {
+            columns: {
+              createdAt: false
+            }
+          }
+        },
+        limit: limitRow,
+        offset,
+        orderBy: sorted === 'asc' ? sortedAsc : sortedDesc
+      });
 
       const meta = await createMeta({
         table: product,

@@ -1,4 +1,4 @@
-import useSWR from 'swr';
+import useSWRImmutable from 'swr/immutable';
 import { useDebounce } from 'use-debounce';
 import { useCallback, useState } from 'react';
 import { useToast } from '~/src/hooks/useToast';
@@ -10,10 +10,16 @@ import { productCategory } from '~/db/schema/product';
 
 type ProductCategory = InferSelectModel<typeof productCategory>;
 
-export const useProductCategories = () => {
+type Option = {
+  disabled: boolean;
+};
+
+export const useProductCategories = (opt?: Option) => {
   const [isMutating, setMutating] = useState(false);
 
-  const { data, isLoading, mutate } = useSWR<HttpResponse<ProductCategory[]>, Error>('product-category');
+  const { data, isLoading, mutate } = useSWRImmutable<HttpResponse<ProductCategory[]>, Error>(
+    opt?.disabled ? null : 'product-category'
+  );
 
   const [value] = useDebounce(isLoading, 500);
   const { toast } = useToast();

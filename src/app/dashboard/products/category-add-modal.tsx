@@ -20,7 +20,9 @@ export const CategoryAddModal = () => {
   const [catName, setCatName] = useState('');
 
   const state = useProductState();
-  const { data, deleteCategory, addCategory, isLoading, isMutating } = useProductCategories();
+  const { data, deleteCategory, addCategory, isLoading, isMutating } = useProductCategories({
+    disabled: !state.isCategoryModalOpen
+  });
 
   const columns: ColumnDef<ProductCategory>[] = useMemo(
     () => [
@@ -43,7 +45,7 @@ export const CategoryAddModal = () => {
         )
       }
     ],
-    [deleteCategory]
+    [deleteCategory, isMutating]
   );
 
   const createProductCat = async (e: FormEvent<HTMLFormElement>) => {
